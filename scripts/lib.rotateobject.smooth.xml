@@ -1,0 +1,811 @@
+<?xml version="1.0" standalone="yes" ?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl" ?>
+<script>
+<name>lib.rotateobject.smooth</name>
+<version>1</version>
+<engineversion>73</engineversion>
+<description>Smoothly rotate an object towards an angle</description>
+<arguments>
+<argument index="1" name="alpha" type="Var/Number" desc="" />
+<argument index="2" name="beta" type="Var/Number" desc="" />
+<argument index="3" name="gamma" type="Var/Number" desc="" />
+</arguments>
+<sourceplaintext>
+<![CDATA[
+  $steeringA = [THIS] ->get current steering alpha
+  skip if $steeringA
+    return null
+  $steeringB = [THIS] ->get current steering beta
+  $steeringC = [THIS] ->get current steering gamma
+  $steering = get minimum, $steeringA, $steeringB, $steeringC, $steeringA, $steeringB
+  * $steering = $steering * 2 / 3
+  * assume 60fps - 16.67ms per frame
+  $wait = 16
+  $rotPerTickMax = $steering * $wait / 1000
+  $diffBiggest = 0
+  
+  $alphaCurrent = [THIS] -> get rot alpha
+  $diff = $alpha - $alphaCurrent
+  gosub sub.CalcDiffs
+  $diffAlpha = $diff
+  
+  $betaCurrent = [THIS] -> get rot beta
+  $diff = $beta - $betaCurrent
+  gosub sub.CalcDiffs
+  $diffBeta = $diff
+  
+  $gammaCurrent = [THIS] -> get rot gamma
+  $diff = $gamma - $gammaCurrent
+  gosub sub.CalcDiffs
+  $diffGamma = $diff
+  
+  $ticks = $diffBiggest / $rotPerTickMax
+  $rotPerTickAlpha = $diffAlpha / $ticks
+  $rotPerTickBeta = $diffBeta / $ticks
+  $rotPerTickGamma = $diffGamma / $ticks
+  
+  while $ticks
+    dec $ticks = 
+    $current = $alphaCurrent + $rotPerTickAlpha
+    gosub sub.BoundRotToCircle
+    $alphaCurrent = $current
+    $current = $betaCurrent + $rotPerTickBeta
+    gosub sub.BoundRotToCircle
+    $betaCurrent = $current
+    $current = $gammaCurrent + $rotPerTickGamma
+    gosub sub.BoundRotToCircle
+    $gammaCurrent = $current
+    [THIS] ->set rotation: alpha=$alphaCurrent beta=$betaCurrent gamma=$gammaCurrent
+@   = wait $wait ms
+  end
+  [THIS] ->set rotation: alpha=$alpha beta=$beta gamma=$gamma
+  
+  return null
+  * ============
+  sub.CalcDiffs:
+  if $diff > 32768
+    $diff = $diff - 65536
+  else if $diff < -32768
+    $diff = $diff + 65536
+  end
+  $diffABS = get absolute value: $diff
+  $diffBiggest = get maximum, $diffABS, $diffBiggest, 0, 0, 0
+  endsub
+  * ============
+  sub.BoundRotToCircle:
+  do if $current > 65536
+    $current = $current - 65536
+  do if $current < 0
+    $current = $current + 65536
+  endsub
+  
+  return null
+]]>
+</sourceplaintext>
+<sourcetext>
+<line indent=""><var>$steeringA&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;current&#160;steering&#160;alpha</text></line>
+<line indent=""><var>skip&#160;if&#160;</var><var>$steeringA</var></line>
+<line indent="&#160;"><text>return&#160;</text><var>null</var></line>
+<line indent=""><var>$steeringB&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;current&#160;steering&#160;beta</text></line>
+<line indent=""><var>$steeringC&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;current&#160;steering&#160;gamma</text></line>
+<line indent=""><var>$steering&#160;=&#160;</var><text>get&#160;minimum,&#160;</text><var>$steeringA</var><text>,&#160;</text><var>$steeringB</var><text>,&#160;</text><var>$steeringC</var><text>,&#160;</text><var>$steeringA</var><text>,&#160;</text><var>$steeringB</var></line>
+<line indent=""><comment><text>*&#160;</text><var>$steering&#160;=&#160;$steering&#160;*&#160;2&#160;/&#160;3</var></comment></line>
+<line indent=""><comment><text>*&#160;</text><var>assume&#160;60fps&#160;-&#160;16.67ms&#160;per&#160;frame</var></comment></line>
+<line indent=""><var>$wait&#160;=&#160;</var><var>16</var></line>
+<line indent=""><var>$rotPerTickMax&#160;=&#160;</var><var>$steering</var><text>&#160;</text><var>*</var><text>&#160;</text><var>$wait</var><text>&#160;</text><var>/</var><text>&#160;</text><var>1000</var></line>
+<line indent=""><var>$diffBiggest&#160;=&#160;</var><var>0</var></line>
+<line indent=""></line>
+<line indent=""><var>$alphaCurrent&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;rot&#160;alpha</text></line>
+<line indent=""><var>$diff&#160;=&#160;</var><var>$alpha</var><text>&#160;</text><var>-</var><text>&#160;</text><var>$alphaCurrent</var></line>
+<line indent=""><text>gosub&#160;</text><var>sub.CalcDiffs</var></line>
+<line indent=""><var>$diffAlpha&#160;=&#160;</var><var>$diff</var></line>
+<line indent=""></line>
+<line indent=""><var>$betaCurrent&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;rot&#160;beta</text></line>
+<line indent=""><var>$diff&#160;=&#160;</var><var>$beta</var><text>&#160;</text><var>-</var><text>&#160;</text><var>$betaCurrent</var></line>
+<line indent=""><text>gosub&#160;</text><var>sub.CalcDiffs</var></line>
+<line indent=""><var>$diffBeta&#160;=&#160;</var><var>$diff</var></line>
+<line indent=""></line>
+<line indent=""><var>$gammaCurrent&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;rot&#160;gamma</text></line>
+<line indent=""><var>$diff&#160;=&#160;</var><var>$gamma</var><text>&#160;</text><var>-</var><text>&#160;</text><var>$gammaCurrent</var></line>
+<line indent=""><text>gosub&#160;</text><var>sub.CalcDiffs</var></line>
+<line indent=""><var>$diffGamma&#160;=&#160;</var><var>$diff</var></line>
+<line indent=""></line>
+<line indent=""><var>$ticks&#160;=&#160;</var><var>$diffBiggest</var><text>&#160;</text><var>/</var><text>&#160;</text><var>$rotPerTickMax</var></line>
+<line indent=""><var>$rotPerTickAlpha&#160;=&#160;</var><var>$diffAlpha</var><text>&#160;</text><var>/</var><text>&#160;</text><var>$ticks</var></line>
+<line indent=""><var>$rotPerTickBeta&#160;=&#160;</var><var>$diffBeta</var><text>&#160;</text><var>/</var><text>&#160;</text><var>$ticks</var></line>
+<line indent=""><var>$rotPerTickGamma&#160;=&#160;</var><var>$diffGamma</var><text>&#160;</text><var>/</var><text>&#160;</text><var>$ticks</var></line>
+<line indent=""></line>
+<line indent=""><var>while&#160;</var><var>$ticks</var></line>
+<line indent="&#160;"><text>dec&#160;</text><var>$ticks&#160;=&#160;</var></line>
+<line indent="&#160;"><var>$current&#160;=&#160;</var><var>$alphaCurrent</var><text>&#160;</text><var>+</var><text>&#160;</text><var>$rotPerTickAlpha</var></line>
+<line indent="&#160;"><text>gosub&#160;</text><var>sub.BoundRotToCircle</var></line>
+<line indent="&#160;"><var>$alphaCurrent&#160;=&#160;</var><var>$current</var></line>
+<line indent="&#160;"><var>$current&#160;=&#160;</var><var>$betaCurrent</var><text>&#160;</text><var>+</var><text>&#160;</text><var>$rotPerTickBeta</var></line>
+<line indent="&#160;"><text>gosub&#160;</text><var>sub.BoundRotToCircle</var></line>
+<line indent="&#160;"><var>$betaCurrent&#160;=&#160;</var><var>$current</var></line>
+<line indent="&#160;"><var>$current&#160;=&#160;</var><var>$gammaCurrent</var><text>&#160;</text><var>+</var><text>&#160;</text><var>$rotPerTickGamma</var></line>
+<line indent="&#160;"><text>gosub&#160;</text><var>sub.BoundRotToCircle</var></line>
+<line indent="&#160;"><var>$gammaCurrent&#160;=&#160;</var><var>$current</var></line>
+<line indent="&#160;"><var>[THIS]&#160;-&gt;</var><text>set&#160;rotation:&#160;alpha=</text><var>$alphaCurrent</var><text>&#160;beta=</text><var>$betaCurrent</var><text>&#160;gamma=</text><var>$gammaCurrent</var></line>
+<line interruptable="@" indent="&#160;"><var>=&#160;</var><text>wait&#160;</text><var>$wait</var><text>&#160;ms</text></line>
+<line indent=""><text>end</text></line>
+<line indent=""><var>[THIS]&#160;-&gt;</var><text>set&#160;rotation:&#160;alpha=</text><var>$alpha</var><text>&#160;beta=</text><var>$beta</var><text>&#160;gamma=</text><var>$gamma</var></line>
+<line indent=""></line>
+<line indent=""><text>return&#160;</text><var>null</var></line>
+<line indent=""><comment><text>*&#160;</text><var>============</var></comment></line>
+<line indent=""><var>sub.CalcDiffs</var><text>:</text></line>
+<line indent=""><var>if&#160;</var><var>$diff</var><text>&#160;</text><var>&gt;</var><text>&#160;</text><var>32768</var></line>
+<line indent="&#160;"><var>$diff&#160;=&#160;</var><var>$diff</var><text>&#160;</text><var>-</var><text>&#160;</text><var>65536</var></line>
+<line indent=""><var>else&#160;if&#160;</var><var>$diff</var><text>&#160;</text><var>&lt;</var><text>&#160;</text><var>-32768</var></line>
+<line indent="&#160;"><var>$diff&#160;=&#160;</var><var>$diff</var><text>&#160;</text><var>+</var><text>&#160;</text><var>65536</var></line>
+<line indent=""><text>end</text></line>
+<line indent=""><var>$diffABS&#160;=&#160;</var><text>get&#160;absolute&#160;value:&#160;</text><var>$diff</var></line>
+<line indent=""><var>$diffBiggest&#160;=&#160;</var><text>get&#160;maximum,&#160;</text><var>$diffABS</var><text>,&#160;</text><var>$diffBiggest</var><text>,&#160;</text><var>0</var><text>,&#160;</text><var>0</var><text>,&#160;</text><var>0</var></line>
+<line indent=""><text>endsub</text></line>
+<line indent=""><comment><text>*&#160;</text><var>============</var></comment></line>
+<line indent=""><var>sub.BoundRotToCircle</var><text>:</text></line>
+<line indent=""><var>do&#160;if&#160;</var><var>$current</var><text>&#160;</text><var>&gt;</var><text>&#160;</text><var>65536</var></line>
+<line indent="&#160;"><var>$current&#160;=&#160;</var><var>$current</var><text>&#160;</text><var>-</var><text>&#160;</text><var>65536</var></line>
+<line indent=""><var>do&#160;if&#160;</var><var>$current</var><text>&#160;</text><var>&lt;</var><text>&#160;</text><var>0</var></line>
+<line indent="&#160;"><var>$current&#160;=&#160;</var><var>$current</var><text>&#160;</text><var>+</var><text>&#160;</text><var>65536</var></line>
+<line indent=""><text>endsub</text></line>
+<line indent=""></line>
+<line indent=""><text>return&#160;</text><var>null</var></line>
+</sourcetext>
+<codearray>
+
+<sval type="array" size="10">
+  <sval type="string" val="lib.rotateobject.smooth"/>
+  <sval type="int" val="73"/>
+  <sval type="string" val="Smoothly rotate an object towards an angle"/>
+  <sval type="int" val="1"/>
+  <sval type="int" val="0"/>
+  <sval type="array" size="23">
+    <sval type="string" val="alpha"/>
+    <sval type="string" val="beta"/>
+    <sval type="string" val="gamma"/>
+    <sval type="string" val="steeringA"/>
+    <sval type="string" val="steeringB"/>
+    <sval type="string" val="steeringC"/>
+    <sval type="string" val="steering"/>
+    <sval type="string" val="wait"/>
+    <sval type="string" val="rotPerTickMax"/>
+    <sval type="string" val="diffBiggest"/>
+    <sval type="string" val="alphaCurrent"/>
+    <sval type="string" val="diff"/>
+    <sval type="string" val="diffAlpha"/>
+    <sval type="string" val="betaCurrent"/>
+    <sval type="string" val="diffBeta"/>
+    <sval type="string" val="gammaCurrent"/>
+    <sval type="string" val="diffGamma"/>
+    <sval type="string" val="ticks"/>
+    <sval type="string" val="rotPerTickAlpha"/>
+    <sval type="string" val="rotPerTickBeta"/>
+    <sval type="string" val="rotPerTickGamma"/>
+    <sval type="string" val="current"/>
+    <sval type="string" val="diffABS"/>
+  </sval>
+  <sval type="array" size="57">
+    <sval type="array" size="4">
+      <sval type="int" val="2207"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="3"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-536870137"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="2208"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="2209"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="5"/>
+    </sval>
+    <sval type="array" size="12">
+      <sval type="int" val="1597"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="19">
+      <sval type="int" val="104"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="1000"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="-2"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="-4"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="777"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="10"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="41"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="778"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="13"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="41"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="779"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="15"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="41"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="18"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="19"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="20"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610602743"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="143"/>
+      <sval type="int" val="17"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="18"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="50"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="19"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="50"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="20"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="50"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="9">
+      <sval type="int" val="768"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="15"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="105"/>
+      <sval type="int" val="-2147483647"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="7"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="25"/>
+    </sval>
+    <sval type="array" size="9">
+      <sval type="int" val="768"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="101"/>
+      <sval type="string" val="sub.CalcDiffs"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610601213"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="32768"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="65536"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="47"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610600699"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="-32768"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="65536"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="3003"/>
+      <sval type="int" val="22"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+    </sval>
+    <sval type="array" size="12">
+      <sval type="int" val="1457"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="22"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="1">
+      <sval type="int" val="1168"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="101"/>
+      <sval type="string" val="sub.BoundRotToCircle"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610599160"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="65536"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="65536"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610598648"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="21"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="65536"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="1">
+      <sval type="int" val="1168"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+  </sval>
+  <sval type="array" size="3">
+    <sval type="array" size="2">
+      <sval type="int" val="10"/>
+      <sval type="string" val=""/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="10"/>
+      <sval type="string" val=""/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="10"/>
+      <sval type="string" val=""/>
+    </sval>
+  </sval>
+  <sval type="array" size="13">
+    <sval type="array" size="3">
+      <sval type="int" val="6"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="$steering = $steering * 2 / 3"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="6"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="assume 60fps - 16.67ms per frame"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="9"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="13"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="17"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="21"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="25"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="39"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="40"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="41"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="============"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="47"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="50"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="============"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="56"/>
+      <sval type="int" val="2"/>
+    </sval>
+  </sval>
+  <sval type="int" val="0"/>
+</sval>
+
+</codearray>
+<nosignature>3940</nosignature>
+</script>

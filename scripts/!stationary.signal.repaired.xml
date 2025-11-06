@@ -1,0 +1,92 @@
+<?xml version="1.0" standalone="yes" ?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl" ?>
+<script>
+<name>!stationary.signal.repaired</name>
+<version>1</version>
+<engineversion>73</engineversion>
+<description>Register hits by repair ships with local var</description>
+<arguments>
+<argument index="1" name="repairer" type="Value" desc="" />
+</arguments>
+<sourceplaintext>
+<![CDATA[
+  skip if [THIS] -> is in active sector
+    return null
+  $time = $repairer -> get flight time
+  $repairer ->set local variable: name='last-repair-hit' value=$time
+  * = [THIS]-> call script 'plugin.jj.lib.log.object' : prepend='Signal Repair' logFile=9898
+  return null
+]]>
+</sourceplaintext>
+<sourcetext>
+<line indent=""><var>skip&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;in&#160;active&#160;sector</text></line>
+<line indent="&#160;"><text>return&#160;</text><var>null</var></line>
+<line indent=""><var>$time&#160;=&#160;</var><var>$repairer&#160;-&gt;</var><text>&#160;get&#160;flight&#160;time</text></line>
+<line indent=""><var>$repairer&#160;-&gt;</var><text>set&#160;local&#160;variable:&#160;name=</text><var>'last-repair-hit'</var><text>&#160;value=</text><var>$time</var></line>
+<line indent=""><comment><text>*&#160;</text><var>=&#160;[THIS]-&gt;&#160;call&#160;script&#160;'plugin.jj.lib.log.object'&#160;:&#160;prepend='Signal&#160;Repair'&#160;logFile=9898</var></comment></line>
+<line indent=""><text>return&#160;</text><var>null</var></line>
+</sourcetext>
+<codearray>
+
+<sval type="array" size="10">
+  <sval type="string" val="!stationary.signal.repaired"/>
+  <sval type="int" val="73"/>
+  <sval type="string" val="Register hits by repair ships with local var"/>
+  <sval type="int" val="1"/>
+  <sval type="int" val="0"/>
+  <sval type="array" size="2">
+    <sval type="string" val="repairer"/>
+    <sval type="string" val="time"/>
+  </sval>
+  <sval type="array" size="5">
+    <sval type="array" size="4">
+      <sval type="int" val="761"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-536870393"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="1182"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="1"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="155"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="5"/>
+      <sval type="string" val="last-repair-hit"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+  </sval>
+  <sval type="array" size="1">
+    <sval type="array" size="2">
+      <sval type="int" val="9"/>
+      <sval type="string" val=""/>
+    </sval>
+  </sval>
+  <sval type="array" size="1">
+    <sval type="array" size="3">
+      <sval type="int" val="4"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="= [THIS]-&gt; call script 'plugin.jj.lib.log.object' : prepend='Signal Repair' logFile=9898"/>
+    </sval>
+  </sval>
+  <sval type="int" val="0"/>
+</sval>
+
+</codearray>
+<nosignature>6473</nosignature>
+</script>

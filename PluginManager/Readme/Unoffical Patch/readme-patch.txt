@@ -575,7 +575,9 @@ Added new script commands
 1.3.20
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
-	Added docking lockup fix to improve ships/drones docking at carriers	
+	Added docking lockup fix to improve ships/drones docking at carriers
+	Fixed M7D drones inability to repair huge stations in active sector
+	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector
 	
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
