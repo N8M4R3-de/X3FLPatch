@@ -582,3 +582,4 @@ Added new script commands
 	Fixed getDialogRace script command
 	Fixed is docking allowed command to work with freight drones on larger ships.
 	Added Fire lasers ahead script command
+	Added Reset S/M/L shipyard state script command
