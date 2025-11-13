@@ -142,18 +142,32 @@
 
 <page id="392008" title="Script Object Commands" descr="0" voice="no">
  <t id="9600">COMMAND_UPGRADE_FACTORY</t>
+ <t id="100013">COMMAND_DRONE_REPAIR_OBJECT</t>
 </page>
 
 <page id="392010" title="Script Cmd Names" descr="0" voice="no">
  <t id="9600">Upgrade factories</t>
+ <t id="100006">Scan asteroids with drones</t>
+ <t id="100013">Repair object with drones</t>
 </page>
 
 <page id="392011" title="Script Cmd Shorts" descr="0" voice="no">
  <t id="9600">Upgrade.Fac</t>
+ <t id="100012">T.Repair</t>
+ <t id="100013">D.Repair</t>
 </page>
 
 <page id="392022" title="Command Info" descr="0" voice="no">
  <t id="9600">This command will allow your TL to automatically upgrade factories that are ready to upgrade.  The TL will find and buy the needed upgrade kits as well as applying them\nThis can work on individual factories, factories within a complex and a whole sector of factories/complexes.\n{2022,99994}</t>
+ <t id="100005">This command orders your drones to explore a sector starting from a point in space selected by you. They will use the size of the sector to calculate a suitable search area. When they have covered their entire search area they will return to the carrier.\n{2022,99994}</t>
+ <t id="100006">This command orders your drones to scan any asteroids in the sector already discovered by you. If new asteroids are discovered en-route, drones will be dispatched to scan these also.\n{2022,99994}</t>
+ <t id="100007">This command orders your drones to scan the freight bay of ships in the sector. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100009">This command orders your drones to repair damaged ships in the sector belonging to you. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100010">This command orders your drones to collect wares in the sector. They will deposit the wares in the carrier's freight bay. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100013">This command will send your drones to repair a ship or station using their repair lasers.\n{2022,99994}</t>
+ <t id="100015">This command will send your drones to mine minerals in the sector. Once a drone has filled its cargo bay it will deliver the minerals to the carrier and resume mining. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100019">This command will order your drones to shoot down missiles targeting friendly ships in the sector. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100022">This command will send your drones to collect spaceflies. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
 </page>
 
 <page id="393303" title="L2 Generic Transport Passenger" descr="0" voice="no">

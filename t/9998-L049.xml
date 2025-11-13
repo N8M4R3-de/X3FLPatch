@@ -411,6 +411,7 @@
 
 <page id="392008" title="Script Object Commands" descr="0" voice="no">
  <t id="9600">COMMAND_UPGRADE_FACTORY</t>
+ <t id="100013">COMMAND_DRONE_REPAIR_OBJECT</t>
 </page>
 
 <page id="392010" title="Script Cmd Names" descr="0" voice="no">
@@ -432,6 +433,7 @@
  <t id="100000">Ausrüstungsplan anwenden</t>
  <t id="100003">Beschädigte Schiffe in Schiffsw./HQ reparieren</t>
  <t id="100010">Waren mit Drohnen einsammeln</t>
+ <t id="100013">Objekt mit Drohnen reparieren</t>
  <t id="100028">Waren von Heimatbasis holen</t>
  <t id="100029">Waren an Heimatbasis liefern</t>
 </page>
@@ -525,7 +527,7 @@
  <t id="100009">D.Rep.Schiff</t>
  <t id="100010">D.Sammle.Waren</t>
  <t id="100012">Rep.Ziel</t>
- <t id="100013">D.Rep.Stat</t>
+ <t id="100013">D.Reparieren</t>
  <t id="100015">D.Bergbau</t>
  <t id="100016">Aufkl.Tor</t>
  <t id="100022">D.Sammle.Fliegen</t>
@@ -559,6 +561,15 @@
  <t id="1100">Dieser Befehl überweist automatisch Geldbeträge zwischen dem Stationskonto und deinem persönlichen Konto.\nWenn das Stationskonto unter den Mindestwert fällt, wird Geld von deinem Konto auf das Stationskonto überwiesen.\nWenn das Stationskonto den Höchstwert überschreitet, wird dieser vom Stationskonto auf dein persönliches Konto überwiesen.\n{2022,99994}</t>
  <t id="9600">Dieser Befehl weist deinem TL an, Fabriken die aufgerüstet werden können, automatisch auf zu rüsten. Dein TL wird die benötigten Stations-Upgradebausätze finden, diese kaufen und deine Stationen damit aufrüsten.\nDieser Befehl kann für eine einzelne Fabriken, Fabriken innerhalb von Komplexen, sowie für alle im Sektor befindlichen Fabriken bzw. Komplexe angewandt werden.\n{2022,99994}</t>
  <t id="100000">Schiff wird für einen Ausrüstungswechsel zu einem Hauptquartier geschickt. Das Schiff wird warten, bis alle erforderlichen Waren verfügbar sind.</t>
+ <t id="100005">Dieser Befehl weist Ihre Drohnen an, einen Sektor ab einem von Ihnen gewählten Punkt im Weltraum zu erkunden. Sie werden die Größe des Sektors nutzen, um ein geeignetes Suchgebiet zu berechnen. Sobald sie ihr gesamtes Suchgebiet abgedeckt haben, kehren sie zum Mutterschiff zurück.\n{2022,99994}</t>
+ <t id="100006">Dieser Befehl weist deine Drohnen an, alle Asteroiden im Sektor zu scannen, die bereits von dir entdeckt wurden. Wenn unterwegs neue Asteroiden entdeckt werden, werden Drohnen ebenfalls entsandt, um diese zu scannen.\n{2022,99994}</t>
+ <t id="100007">Dieser Befehl weist Ihre Drohnen an, den Frachtraum der Schiffe im Sektor zu scannen. Der Befehl wird unbegrenzt ausgeführt, bis Sie Ihrem Träger befehlen, etwas anderes zu tun.\n{2022,99994}</t>
+ <t id="100009">Dieser Befehl befiehlt Ihren Drohnen, beschädigte Schiffe im Sektor, der Ihnen gehört, zu reparieren. Der Befehl wird unendlich ausgeführt, bis Sie Ihrem Träger befehlen, etwas anderes zu tun.\n{2022,99994}</t>
+ <t id="100010">Dieser Befehl weist Ihre Drohnen an, Waren im Sektor zu sammeln. Sie werden die Waren im Frachtraum des Carriers ablegen. Der Befehl wird unbestimmt ausgeführt, bis Sie Ihrem Carrier einen anderen Auftrag erteilen.\n{2022,99994}</t>
+ <t id="100013">Dieser Befehl schickt deine Drohnen aus, um mittels ihrer Reparaturlaser ein Schiff oder eine Station zu reparieren.\n{2022,99994}</t>
+ <t id="100015">Dieser Befehl wird Ihre Drohnen in den Sektor schicken, um Mineralien abzubauen. Sobald eine Drohne ihre Frachtkammer gefüllt hat, liefert sie die Mineralien an den Träger und setzt den Abbau fort. Der Befehl läuft unbegrenzt, bis Sie Ihrem Träger etwas anderes befehlen.\n{2022,99994}</t>
+ <t id="100019">Dieser Befehl wird Ihre Drohnen anweisen, Raketen abzufangen, die freundliche Schiffe im Sektor angreifen. Der Befehl wird ununterbrochen ausgeführt, bis Sie Ihrem Träger einen anderen Befehl geben.\n{2022,99994}</t>
+ <t id="100022">Dieser Befehl wird Ihre Drohnen aussenden, um Weltraumfliegen zu sammeln. Der Befehl wird unbegrenzt ausgeführt, bis Sie Ihrem Träger etwas anderes befehlen.\n{2022,99994}</t>
  <t id="100031">Während dieser Befehl läuft, werden die Waren in deiner Station/deinem Komplex verwaltet. Alle heimatbasierten Schiffe werden benutzt, repariert und ersetzt, wenn nötig.\n\nDer Stationsmanager wird seinen Dienst solange fort führen, bis sein Befehl aus dem Kommandoslot der Station entfernt wird. Für die Dienste des Managers fällt eine Gebühr an, welche alle 2 Stunden vom Stationskonto abgebucht wird. Wenn sich nicht mehr genügend Credits auf dem Stationskonto vorhanden sind, werden die Dienste eingestellt, bis sie wieder bezahlt werden können.\n\nWährend der Manager Stationszugewiesene Schiffe verwendet, wird dessen Kontrolle übernommen, was dich daran hindert, diesen Schiffen Befehle zu erteilen.\n{2022,99994}</t>
 </page>
 
