@@ -594,6 +594,7 @@ Added new script commands
       Prepared to be usable by AI owned M7Ds
       Improved CPU efficiency.
       Drones won't collect wares undiscovered by player.
+    Fixed and improved Drone Carrier command 'Resupply ships with drones'
 
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
