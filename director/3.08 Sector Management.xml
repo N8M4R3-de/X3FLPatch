@@ -333,35 +333,47 @@
       </cues>
     </cue>
 
-    <cue name="RMG" instantiate="static">
-      <condition>
-        <object_changed_sector/>
-      </condition>
-      <action>
-        <do_all>
-          <do_choose>
-            <do_when value="{player.sector.race}" list="{lookup.race@pirate}|{lookup.race@xenon}|{lookup.race@unknown}">
-              <do_any>
-                <set_value name="this.Track" min="35" max="40" comment="Sombre XBTF" chance="70"/>
-                <set_value name="this.Track" min="8214" max="8215" comment="Sombre X3TC" chance="30"/>
-              </do_any>
-            </do_when>
-            <do_otherwise>
-              <do_any>
-                <set_value name="this.Track" min="19" max="34" comment="Ambiance XBTF" chance="50"/>
-                <set_value name="this.Track" min="3001" max="3003" comment="Ambiance X2" chance="20"/>
-                <set_value name="this.Track" exact="8509" comment="Ambiance X3TC" chance="10"/>
-                <set_value name="this.Track" min="8601" max="8603" comment="Ambiance X2" chance="20"/>
-              </do_any>
-            </do_otherwise>
-          </do_choose>
-
-          <do_if value="{player.sector.fixedmusic}" exact="0">
-            <alter_sector sector="{player.sector}" music="{value@this.Track}"/>
-          </do_if>
-        </do_all>
-      </action>
-    </cue>
+	  <cue name="RMG" instantiate="static">
+		  <condition>
+			  <object_changed_sector/>
+		  </condition>
+		  <action>
+			  <do_if value="{player.sector.fixedmusic}" exact="0">
+				  <alter_sector sector="{player.sector}" music="0"/>
+			  </do_if>
+		  </action>
+	  </cue>
+	  <cue name="RMG2" instantiate="static">
+		  <condition>
+			  <object_changed_sector/>
+		  </condition>
+		  <timing>
+			  <time exact="1s"/>
+		  </timing>
+		  <action>
+			  <do_all>
+				  <do_if value="{player.sector.fixedmusic}" exact="0">
+					  <do_choose>
+						  <do_when value="{player.sector.race}" list="{lookup.race@pirate}|{lookup.race@xenon}|{lookup.race@unknown}">
+							  <do_any>
+								  <set_value name="this.Track" min="35" max="40" comment="Sombre XBTF" chance="70"/>
+								  <set_value name="this.Track" min="8214" max="8215" comment="Sombre X3TC" chance="30"/>
+							  </do_any>
+						  </do_when>
+						  <do_otherwise>
+							  <do_any>
+								  <set_value name="this.Track" min="19" max="34" comment="Ambiance XBTF" chance="50"/>
+								  <set_value name="this.Track" min="3001" max="3003" comment="Ambiance X2" chance="20"/>
+								  <set_value name="this.Track" exact="8509" comment="Ambiance X3TC" chance="10"/>
+								  <set_value name="this.Track" min="8601" max="8603" comment="Ambiance X2" chance="20"/>
+							  </do_any>
+						  </do_otherwise>
+					  </do_choose>
+					  <alter_sector sector="{player.sector}" music="{value@this.Track}"/>
+				  </do_if>
+			  </do_all>
+		  </action>
+	  </cue>
 
 	  <cue name="UFJD">
 		  <action>
