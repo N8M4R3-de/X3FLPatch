@@ -40901,6 +40901,7 @@
  <t id="3302">%0set station rebuild in owner sector only: %1</t>
  <t id="3303">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, script=%5</t>
  <t id="3304">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, scriptname=%5</t>
+ <t id="3305">add black market ware: %0, chance=%1</t>
 </page>
 
 <page id="392005" title="Script Command Menu" descr="0" voice="no">

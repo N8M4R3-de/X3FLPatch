@@ -575,12 +575,14 @@ Added new script commands
 1.3.20
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
-	Added docking lockup fix to improve ships/drones docking at carriers
 	Fixed M7D drones inability to repair huge stations in active sector
-	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector
+	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector	Added docking lockup fix to improve ships/drones docking at carriers	
+	Improved random music generator
+	Improved paranid reputation diplomacy during FL plot
 	
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
 	Fixed is docking allowed command to work with freight drones on larger ships.
+	Fixed Side Menu in custom menus overlapping monitor
 	Added Fire lasers ahead script command
 	Added Reset S/M/L shipyard state script command

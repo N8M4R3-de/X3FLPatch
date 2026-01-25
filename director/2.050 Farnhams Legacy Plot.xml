@@ -966,8 +966,8 @@
                 <ware min="187" max="232" typename="SS_WARE_R255" comment="Teladianium"/>
                 <ware min="42" max="54" typename="SS_WARE_F217" comment="Cloth Rimes"/>
                 <ware min="75" max="83" typename="SS_WARE_F238" comment="Rastar Oil"/>
-                <ware min="154" max="168" typename="SS_WARE_ORE" comment="Ore"/>
-                <ware min="116" max="128" typename="SS_WARE_SILICON" comment="Silicon Wafers"/>
+				<ware min="154" max="168" typename="SS_WARE_ORE" comment="Ore"/>
+				<ware min="116" max="128" typename="SS_WARE_SILICON" comment="Silicon Wafers"/>
                 <ware min="11" max="42" typename="SS_WARE_TECH205" comment="Crystals"/>
                 <ware min="47" max="61" typename="SS_WARE_TECH206" comment="Quantum Tubes"/>
                 <ware min="75" max="88" typename="SS_WARE_TECH207" comment="Microchips"/>
@@ -1831,8 +1831,8 @@
                       </reward_player>
                       <set_known object="L2M050.ParanidTrading" known="1"/>
                       <remove_offer actor="L2M050.Diplomat" conversation="L2M050_DIP_2" discipline="XXXXP"/>
-                      <create_agent character="{actor.name@L2M050.Diplomat}" race="paranid" homebase="L2M050.PHQ" tasks="8"/>
-                      <set_diplomacy_tutorial race="paranid" command="assign" tasks="3"/>
+                      <create_agent character="{actor.name@L2M050.Diplomat}" race="paranid" homebase="L2M050.PHQ" tasks="12"/>
+                      <set_diplomacy_tutorial race="paranid" command="assign" tasks="5"/>
                       <unlock_achievement name="DIPLOMAT"/>
                       <create_briefing cue="L2M050" story="{3225,9010}" title="{3225,9011}" text="{3225,9012}" background="cp_paranid_sx.tga">
                         <mission discipline="XXXXP" level="easy"/>
@@ -1877,7 +1877,7 @@
                             <mission discipline="XXXXP" level="easy"/>
                             <talkto actor="L2M050.MissionGiver"/>
                           </set_objective>
-                          <set_diplomacy_tutorial race="paranid" command="increaserep" influence="600"/>
+                          <set_diplomacy_tutorial race="paranid" command="increaserep" influence="1000"/>
                         </do_all>
                       </action>
                       <cues>
