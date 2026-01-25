@@ -576,10 +576,13 @@ Added new script commands
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
 	Added docking lockup fix to improve ships/drones docking at carriers
-	Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
+  Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
+	Improved random music generator
+	Improved paranid reputation diplomacy during FL plot
 	
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
 	Fixed is docking allowed command to work with freight drones on larger ships.
+	Fixed Side Menu in custom menus overlapping monitor
 	Added Fire lasers ahead script command
 	Added Reset S/M/L shipyard state script command

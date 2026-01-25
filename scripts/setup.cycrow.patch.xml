@@ -2,7 +2,7 @@
 <?xml-stylesheet href="x2script.xsl" type="text/xsl" ?>
 <script>
 <name>setup.cycrow.patch</name>
-<version>4</version>
+<version>5</version>
 <engineversion>73</engineversion>
 <description>Patch: Setup script</description>
 <arguments>
@@ -188,7 +188,7 @@
     set notoriety of Goner -> Darkspace to 0 points
     
   * Add the pandora tunings
-    $flags = [WareType.EquipmentPack]
+    $flags = [WareType.EquipmentPack] | [WareType.NoPrice]
     set ware flags: ware=Pandora Tunings flags=$flags
     $tWares = table alloc
     $tWares[Engine Tuning] = 3
@@ -412,7 +412,7 @@
 <line indent="&#160;"><text>set&#160;notoriety&#160;of&#160;</text><var>Goner</var><text>&#160;-&gt;&#160;</text><var>Darkspace</var><text>&#160;to&#160;</text><var>0</var><text>&#160;points</text></line>
 <line indent="&#160;"></line>
 <line indent=""><comment><text>*&#160;</text><var>Add&#160;the&#160;pandora&#160;tunings</var></comment></line>
-<line indent="&#160;"><var>$flags&#160;=&#160;</var><var>[WareType.EquipmentPack]</var></line>
+<line indent="&#160;"><var>$flags&#160;=&#160;</var><var>[WareType.EquipmentPack]</var><text>&#160;</text><var>|</var><text>&#160;</text><var>[WareType.NoPrice]</var></line>
 <line indent="&#160;"><text>set&#160;ware&#160;flags:&#160;ware=</text><var>Pandora&#160;Tunings</var><text>&#160;flags=</text><var>$flags</var></line>
 <line indent="&#160;"><var>$tWares&#160;=&#160;</var><text>table&#160;alloc</text></line>
 <line indent="&#160;"><var>$tWares</var><text>[</text><var>Engine&#160;Tuning</var><text>]&#160;=&#160;</text><var>3</var></line>
@@ -461,7 +461,7 @@
   <sval type="string" val="setup.cycrow.patch"/>
   <sval type="int" val="73"/>
   <sval type="string" val="Patch: Setup script"/>
-  <sval type="int" val="4"/>
+  <sval type="int" val="5"/>
   <sval type="int" val="0"/>
   <sval type="array" size="16">
     <sval type="string" val="page.id"/>
@@ -1857,14 +1857,20 @@
       <sval type="int" val="4"/>
       <sval type="int" val="0"/>
     </sval>
-    <sval type="array" size="7">
+    <sval type="array" size="13">
       <sval type="int" val="104"/>
       <sval type="int" val="10"/>
-      <sval type="int" val="1"/>
+      <sval type="int" val="3"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="629"/>
-      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="635"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="3"/>
       <sval type="int" val="-1"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="-2"/>
     </sval>
     <sval type="array" size="5">
       <sval type="int" val="1708"/>
@@ -2257,5 +2263,5 @@
 </sval>
 
 </codearray>
-<nosignature>6553</nosignature>
+<nosignature>3962</nosignature>
 </script>
