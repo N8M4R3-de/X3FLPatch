@@ -595,9 +595,11 @@ Added new script commands
       Improved CPU efficiency.
       Drones won't collect wares undiscovered by player.
     Fixed and improved Drone Carrier command 'Resupply ships with drones'
-
+	Improved random music generator
+	Improved paranid reputation diplomacy during FL plot    
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
 	Fixed is docking allowed command to work with freight drones on larger ships.
+	Fixed Side Menu in custom menus overlapping monitor
 	Added Fire lasers ahead script command
 	Added Reset S/M/L shipyard state script command
