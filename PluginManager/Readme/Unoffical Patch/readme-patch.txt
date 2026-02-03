@@ -586,3 +586,4 @@ Added new script commands
 	Fixed Side Menu in custom menus overlapping monitor
 	Added Fire lasers ahead script command
 	Added Reset S/M/L shipyard state script command
+	Increased max number of lasers per turret to 80
