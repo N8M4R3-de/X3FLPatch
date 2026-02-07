@@ -6612,6 +6612,9 @@
 				<o t="16" s="SS_WARE_SW_BUILD_MK2"/>
 				<o t="16" s="SS_WARE_SW_BUILD_MK3"/>
 				<o t="16" s="SS_WARE_SW_MINE"/>
+				<o t="16" s="SS_WARE_TECH251"/>
+				<o t="16" s="SS_WARE_TECH213"/>
+				<o t="16" s="SS_WARE_TECH246"/>
 			</o>
 		</o>
 	</o>
@@ -14953,6 +14956,9 @@
 				<o t="16" s="SS_WARE_SW_CARGOHACK"/>
 				<o t="16" s="SS_WARE_MISSILEDEF"/>
 				<o t="16" s="SS_WARE_L_PI"/>
+				<o t="16" s="SS_WARE_TECH251"/>
+				<o t="16" s="SS_WARE_TECH213"/>
+				<o t="16" s="SS_WARE_TECH246"/>
 			</o>
 		</o>
 		<o t="7" s="SS_SH_A_OWP_2" x="7148916" y="671708" z="-2542681" r="26">
