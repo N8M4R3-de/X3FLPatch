@@ -584,6 +584,7 @@ Added new script commands
 	Fixed getDialogRace script command
 	Fixed is docking allowed command to work with freight drones on larger ships.
 	Fixed Side Menu in custom menus overlapping monitor
+	Fixed LFL event triggers in MD
 	Added Fire lasers ahead script command
 	Added Reset S/M/L shipyard state script command
 	Increased max number of lasers per turret to 80
