@@ -3,7 +3,7 @@
 <script>
 <name>!move.movetostation</name>
 <version>4</version>
-<engineversion>72</engineversion>
+<engineversion>73</engineversion>
 <description>Move a ship into a station or carrier</description>
 <arguments>
 <argument index="1" name="targetstation" type="Var/Station/Carrier" desc="station" />
@@ -12,21 +12,26 @@
 <![CDATA[
   skip if $targetstation -> exists
     return FLRET_INVALIDPARMS
-  if not [THIS] -> is of class Drone
-    skip if $targetstation -> is docking possible of [THIS]
-      return FLRET_INVALIDPARMS
+  if [THIS] -> is of class Drone
+    if $targetstation -> is of class Ship
+@     $ret = [THIS] -> call script !move.movetostation.drone :  =$targetstation
+      return $ret
+    end
   end
+  
+  skip if $targetstation -> is docking possible of [THIS]
+    return FLRET_INVALIDPARMS
   skip if [THIS] -> is docking allowed at $targetstation
     return FLRET_INVALIDPARMS
   
-  while 1
-    skip if $targetstation -> exists
-      break
-    
+  $taskLockupFix = null
+  
+  while $targetstation -> exists
     do if [DOCKEDAT] == $targetstation
       break
     
     if not [THIS] -> is in same sector as $targetstation
+      gosub sub.EndTask
       $sec = $targetstation -> get sector
 @     $ret = [THIS] -> call script !move.movetosector :  sector=$sec
       do if $ret == FLRET_NOPATH
@@ -55,20 +60,9 @@
 @     = [THIS] -> call script !ship.signal.docking :  Carrier=$targetstation  Docking?=[TRUE]
     
   * Start docking lockup fix in parallel to main docking task
-    $taskCheck = [THIS] ->get all tasks with script on stack=!move.movetostation.check
-    if not size of array $taskCheck
-      $task = [THIS] -> get next available task: starting=[Task.StartFree]
-      [THIS] ->start task $task with script !move.movetostation.check and prio 100: arg1=$targetstation arg2=null arg3=null arg4=null arg5=null
-    end
-    
-    if [THIS] -> is of class Drone
-      if $targetstation -> is of class Ship
-@       $ret = [THIS] -> call script !move.movetostation.drone :  =$targetstation
-        gosub sub.Signal.Docking
-        do if $ret == FLRET_NOCARGO
-          break
-        continue
-      end
+    if not [THIS] -> is script !move.movetostation.check on stack of task=$taskLockupFix
+      $taskLockupFix = [THIS] -> get next available task: starting=[Task.StartFree]
+      [THIS] ->start task $taskLockupFix with script !move.movetostation.check and prio 100: arg1=$targetstation arg2=null arg3=null arg4=null arg5=null
     end
     
     if [THIS] -> get amount of ware Docking Computer in cargo bay
@@ -82,26 +76,25 @@
     skip if [DOCKEDAT] == $targetstation
 @     $ret = [THIS] -> fly to station $targetstation
     
-    gosub sub.Signal.Docking
+  * remove ship from array
+    if $targetstation -> exists
+      do if $targetstation -> is of class Carrier
+@       = [THIS] -> call script !ship.signal.docking :  Carrier=$targetstation  Docking?=[FALSE]
+    end
+@   = wait randomly from 100 to 200 ms
   end
   
-  if $task
-    if [THIS] ->is named script '!move.movetostation.check' on stack of task=$task
-      [THIS] ->start task $task with script !lib.interrupt and prio 100: arg1=null arg2=null arg3=null arg4=null arg5=null
-    end
-  end
+  gosub sub.EndTask
   return $ret
   
-  * ===========================
-  * Remove ship from docking queue of carrier. 
-  * ===========================
-  sub.Signal.Docking:
-  * remove ship from array
-  if $targetstation -> exists
-    do if $targetstation -> is of class Carrier
-@     = [THIS] -> call script !ship.signal.docking :  Carrier=$targetstation  Docking?=[FALSE]
+  * =================
+  * End tasks
+  * =================
+  sub.EndTask:
+  if $taskLockupFix
+    do if [THIS] ->is named script '!move.movetostation.check' on stack of task=$taskLockupFix
+      [THIS] ->start task $taskLockupFix with script !lib.interrupt and prio 100: arg1=null arg2=null arg3=null arg4=null arg5=null
   end
-@ = wait randomly from 100 to 200 ms
   endsub
   return null
 ]]>
@@ -109,21 +102,26 @@
 <sourcetext>
 <line indent=""><var>skip&#160;if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;exists</text></line>
 <line indent="&#160;"><text>return&#160;</text><var>FLRET_INVALIDPARMS</var></line>
-<line indent=""><var>if&#160;not&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Drone</var></line>
-<line indent="&#160;"><var>skip&#160;if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;is&#160;docking&#160;possible&#160;of&#160;</text><var>[THIS]</var></line>
-<line indent="&#160;&#160;"><text>return&#160;</text><var>FLRET_INVALIDPARMS</var></line>
+<line indent=""><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Drone</var></line>
+<line indent="&#160;"><var>if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Ship</var></line>
+<line interruptable="@" indent="&#160;&#160;"><var>$ret&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!move.movetostation.drone</call><text>&#160;:&#160;</text><text>&#160;=</text><var>$targetstation</var></line>
+<line indent="&#160;&#160;"><text>return&#160;</text><var>$ret</var></line>
+<line indent="&#160;"><text>end</text></line>
 <line indent=""><text>end</text></line>
+<line indent=""></line>
+<line indent=""><var>skip&#160;if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;is&#160;docking&#160;possible&#160;of&#160;</text><var>[THIS]</var></line>
+<line indent="&#160;"><text>return&#160;</text><var>FLRET_INVALIDPARMS</var></line>
 <line indent=""><var>skip&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;docking&#160;allowed&#160;at&#160;</text><var>$targetstation</var></line>
 <line indent="&#160;"><text>return&#160;</text><var>FLRET_INVALIDPARMS</var></line>
 <line indent=""></line>
-<line indent=""><var>while&#160;</var><var>1</var></line>
-<line indent="&#160;"><var>skip&#160;if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;exists</text></line>
-<line indent="&#160;&#160;"><text>break</text></line>
-<line indent="&#160;"></line>
+<line indent=""><var>$taskLockupFix&#160;=&#160;</var><var>null</var></line>
+<line indent=""></line>
+<line indent=""><var>while&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;exists</text></line>
 <line indent="&#160;"><var>do&#160;if&#160;</var><var>[DOCKEDAT]</var><text>&#160;</text><var>==</var><text>&#160;</text><var>$targetstation</var></line>
 <line indent="&#160;&#160;"><text>break</text></line>
 <line indent="&#160;"></line>
 <line indent="&#160;"><var>if&#160;not&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;in&#160;same&#160;sector&#160;as&#160;</text><var>$targetstation</var></line>
+<line indent="&#160;&#160;"><text>gosub&#160;</text><var>sub.EndTask</var></line>
 <line indent="&#160;&#160;"><var>$sec&#160;=&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;get&#160;sector</text></line>
 <line interruptable="@" indent="&#160;&#160;"><var>$ret&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!move.movetosector</call><text>&#160;:&#160;</text><text>&#160;sector=</text><var>$sec</var></line>
 <line indent="&#160;&#160;"><var>do&#160;if&#160;</var><var>$ret</var><text>&#160;</text><var>==</var><text>&#160;</text><var>FLRET_NOPATH</var></line>
@@ -152,20 +150,9 @@
 <line interruptable="@" indent="&#160;&#160;"><var>=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!ship.signal.docking</call><text>&#160;:&#160;</text><text>&#160;Carrier=</text><var>$targetstation</var><text>&#160;</text><text>&#160;Docking?=</text><var>[TRUE]</var></line>
 <line indent="&#160;"></line>
 <line indent=""><comment><text>*&#160;</text><var>Start&#160;docking&#160;lockup&#160;fix&#160;in&#160;parallel&#160;to&#160;main&#160;docking&#160;task</var></comment></line>
-<line indent="&#160;"><var>$taskCheck&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;all&#160;tasks&#160;with&#160;script&#160;on&#160;stack=</text><call>!move.movetostation.check</call></line>
-<line indent="&#160;"><var>if&#160;not&#160;</var><text>size&#160;of&#160;array&#160;</text><var>$taskCheck</var></line>
-<line indent="&#160;&#160;"><var>$task&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;next&#160;available&#160;task:&#160;starting=</text><var>[Task.StartFree]</var></line>
-<line indent="&#160;&#160;"><var>[THIS]&#160;-&gt;</var><text>start&#160;task&#160;</text><var>$task</var><text>&#160;with&#160;script&#160;</text><call>!move.movetostation.check</call><text>&#160;and&#160;prio&#160;</text><var>100</var><text>:&#160;arg1=</text><var>$targetstation</var><text>&#160;arg2=</text><var>null</var><text>&#160;arg3=</text><var>null</var><text>&#160;arg4=</text><var>null</var><text>&#160;arg5=</text><var>null</var></line>
-<line indent="&#160;"><text>end</text></line>
-<line indent="&#160;"></line>
-<line indent="&#160;"><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Drone</var></line>
-<line indent="&#160;&#160;"><var>if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Ship</var></line>
-<line interruptable="@" indent="&#160;&#160;&#160;"><var>$ret&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!move.movetostation.drone</call><text>&#160;:&#160;</text><text>&#160;=</text><var>$targetstation</var></line>
-<line indent="&#160;&#160;&#160;"><text>gosub&#160;</text><var>sub.Signal.Docking</var></line>
-<line indent="&#160;&#160;&#160;"><var>do&#160;if&#160;</var><var>$ret</var><text>&#160;</text><var>==</var><text>&#160;</text><var>FLRET_NOCARGO</var></line>
-<line indent="&#160;&#160;&#160;&#160;"><text>break</text></line>
-<line indent="&#160;&#160;&#160;"><text>continue</text></line>
-<line indent="&#160;&#160;"><text>end</text></line>
+<line indent="&#160;"><var>if&#160;not&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;script&#160;</text><call>!move.movetostation.check</call><text>&#160;on&#160;stack&#160;of&#160;task=</text><var>$taskLockupFix</var></line>
+<line indent="&#160;&#160;"><var>$taskLockupFix&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;next&#160;available&#160;task:&#160;starting=</text><var>[Task.StartFree]</var></line>
+<line indent="&#160;&#160;"><var>[THIS]&#160;-&gt;</var><text>start&#160;task&#160;</text><var>$taskLockupFix</var><text>&#160;with&#160;script&#160;</text><call>!move.movetostation.check</call><text>&#160;and&#160;prio&#160;</text><var>100</var><text>:&#160;arg1=</text><var>$targetstation</var><text>&#160;arg2=</text><var>null</var><text>&#160;arg3=</text><var>null</var><text>&#160;arg4=</text><var>null</var><text>&#160;arg5=</text><var>null</var></line>
 <line indent="&#160;"><text>end</text></line>
 <line indent="&#160;"></line>
 <line indent="&#160;"><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;amount&#160;of&#160;ware&#160;</text><var>Docking&#160;Computer</var><text>&#160;in&#160;cargo&#160;bay</text></line>
@@ -179,26 +166,25 @@
 <line indent="&#160;"><var>skip&#160;if&#160;</var><var>[DOCKEDAT]</var><text>&#160;</text><var>==</var><text>&#160;</text><var>$targetstation</var></line>
 <line interruptable="@" indent="&#160;&#160;"><var>$ret&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;fly&#160;to&#160;station&#160;</text><var>$targetstation</var></line>
 <line indent="&#160;"></line>
-<line indent="&#160;"><text>gosub&#160;</text><var>sub.Signal.Docking</var></line>
+<line indent=""><comment><text>*&#160;</text><var>remove&#160;ship&#160;from&#160;array</var></comment></line>
+<line indent="&#160;"><var>if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;exists</text></line>
+<line indent="&#160;&#160;"><var>do&#160;if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Carrier</var></line>
+<line interruptable="@" indent="&#160;&#160;&#160;"><var>=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!ship.signal.docking</call><text>&#160;:&#160;</text><text>&#160;Carrier=</text><var>$targetstation</var><text>&#160;</text><text>&#160;Docking?=</text><var>[FALSE]</var></line>
+<line indent="&#160;"><text>end</text></line>
+<line interruptable="@" indent="&#160;"><var>=&#160;</var><text>wait&#160;randomly&#160;from&#160;</text><var>100</var><text>&#160;to&#160;</text><var>200</var><text>&#160;ms</text></line>
 <line indent=""><text>end</text></line>
 <line indent=""></line>
-<line indent=""><var>if&#160;</var><var>$task</var></line>
-<line indent="&#160;"><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>is&#160;named&#160;script&#160;</text><var>'!move.movetostation.check'</var><text>&#160;on&#160;stack&#160;of&#160;task=</text><var>$task</var></line>
-<line indent="&#160;&#160;"><var>[THIS]&#160;-&gt;</var><text>start&#160;task&#160;</text><var>$task</var><text>&#160;with&#160;script&#160;</text><call>!lib.interrupt</call><text>&#160;and&#160;prio&#160;</text><var>100</var><text>:&#160;arg1=</text><var>null</var><text>&#160;arg2=</text><var>null</var><text>&#160;arg3=</text><var>null</var><text>&#160;arg4=</text><var>null</var><text>&#160;arg5=</text><var>null</var></line>
-<line indent="&#160;"><text>end</text></line>
-<line indent=""><text>end</text></line>
+<line indent=""><text>gosub&#160;</text><var>sub.EndTask</var></line>
 <line indent=""><text>return&#160;</text><var>$ret</var></line>
 <line indent=""></line>
-<line indent=""><comment><text>*&#160;</text><var>===========================</var></comment></line>
-<line indent=""><comment><text>*&#160;</text><var>Remove&#160;ship&#160;from&#160;docking&#160;queue&#160;of&#160;carrier.&#160;</var></comment></line>
-<line indent=""><comment><text>*&#160;</text><var>===========================</var></comment></line>
-<line indent=""><var>sub.Signal.Docking</var><text>:</text></line>
-<line indent=""><comment><text>*&#160;</text><var>remove&#160;ship&#160;from&#160;array</var></comment></line>
-<line indent=""><var>if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;exists</text></line>
-<line indent="&#160;"><var>do&#160;if&#160;</var><var>$targetstation&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Carrier</var></line>
-<line interruptable="@" indent="&#160;&#160;"><var>=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!ship.signal.docking</call><text>&#160;:&#160;</text><text>&#160;Carrier=</text><var>$targetstation</var><text>&#160;</text><text>&#160;Docking?=</text><var>[FALSE]</var></line>
+<line indent=""><comment><text>*&#160;</text><var>=================</var></comment></line>
+<line indent=""><comment><text>*&#160;</text><var>End&#160;tasks</var></comment></line>
+<line indent=""><comment><text>*&#160;</text><var>=================</var></comment></line>
+<line indent=""><var>sub.EndTask</var><text>:</text></line>
+<line indent=""><var>if&#160;</var><var>$taskLockupFix</var></line>
+<line indent="&#160;"><var>do&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>is&#160;named&#160;script&#160;</text><var>'!move.movetostation.check'</var><text>&#160;on&#160;stack&#160;of&#160;task=</text><var>$taskLockupFix</var></line>
+<line indent="&#160;&#160;"><var>[THIS]&#160;-&gt;</var><text>start&#160;task&#160;</text><var>$taskLockupFix</var><text>&#160;with&#160;script&#160;</text><call>!lib.interrupt</call><text>&#160;and&#160;prio&#160;</text><var>100</var><text>:&#160;arg1=</text><var>null</var><text>&#160;arg2=</text><var>null</var><text>&#160;arg3=</text><var>null</var><text>&#160;arg4=</text><var>null</var><text>&#160;arg5=</text><var>null</var></line>
 <line indent=""><text>end</text></line>
-<line interruptable="@" indent=""><var>=&#160;</var><text>wait&#160;randomly&#160;from&#160;</text><var>100</var><text>&#160;to&#160;</text><var>200</var><text>&#160;ms</text></line>
 <line indent=""><text>endsub</text></line>
 <line indent=""><text>return&#160;</text><var>null</var></line>
 </sourcetext>
@@ -206,19 +192,18 @@
 
 <sval type="array" size="10">
   <sval type="string" val="!move.movetostation"/>
-  <sval type="int" val="72"/>
+  <sval type="int" val="73"/>
   <sval type="string" val="Move a ship into a station or carrier"/>
   <sval type="int" val="4"/>
   <sval type="int" val="0"/>
-  <sval type="array" size="6">
+  <sval type="array" size="5">
     <sval type="string" val="targetstation"/>
-    <sval type="string" val="sec"/>
     <sval type="string" val="ret"/>
-    <sval type="string" val="taskCheck"/>
-    <sval type="string" val="task"/>
+    <sval type="string" val="taskLockupFix"/>
+    <sval type="string" val="sec"/>
     <sval type="string" val="carrier"/>
   </sval>
-  <sval type="array" size="62">
+  <sval type="array" size="57">
     <sval type="array" size="4">
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
@@ -234,15 +219,38 @@
       <sval type="int" val="705"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-536869628"/>
+      <sval type="int" val="-1610611197"/>
       <sval type="int" val="12"/>
       <sval type="int" val="2061"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="705"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="-1610611197"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="2004"/>
+    </sval>
+    <sval type="array" size="8">
+      <sval type="int" val="102"/>
+      <sval type="string" val="!move.movetostation.drone"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="746"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-536869625"/>
+      <sval type="int" val="-536868857"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
     </sval>
@@ -255,7 +263,7 @@
       <sval type="int" val="513"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-536869113"/>
+      <sval type="int" val="-536868345"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
     </sval>
@@ -266,10 +274,10 @@
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610599671"/>
+      <sval type="int" val="2"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -277,15 +285,11 @@
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-536868345"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="112"/>
-      <sval type="int" val="51"/>
+      <sval type="int" val="-1610600183"/>
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610609656"/>
+      <sval type="int" val="-1610609144"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="11"/>
@@ -300,38 +304,42 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="51"/>
+      <sval type="int" val="49"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="733"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-536866044"/>
+      <sval type="int" val="-536865276"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="51"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="703"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="1"/>
+      <sval type="int" val="3"/>
     </sval>
     <sval type="array" size="8">
       <sval type="int" val="102"/>
       <sval type="string" val="!move.movetosector"/>
-      <sval type="int" val="2"/>
+      <sval type="int" val="1"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
-      <sval type="int" val="1"/>
+      <sval type="int" val="3"/>
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610608376"/>
+      <sval type="int" val="-1610607608"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131074"/>
-      <sval type="int" val="2"/>
+      <sval type="int" val="1"/>
       <sval type="int" val="19"/>
       <sval type="int" val="13"/>
       <sval type="int" val="15"/>
@@ -344,7 +352,7 @@
     <sval type="array" size="3">
       <sval type="int" val="103"/>
       <sval type="int" val="131074"/>
-      <sval type="int" val="2"/>
+      <sval type="int" val="1"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="107"/>
@@ -356,11 +364,11 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="7"/>
+      <sval type="int" val="11"/>
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610606845"/>
+      <sval type="int" val="-1610606077"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="11"/>
@@ -385,13 +393,13 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="7"/>
+      <sval type="int" val="11"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="735"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-536863996"/>
+      <sval type="int" val="-536863228"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="507"/>
@@ -411,25 +419,25 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="7"/>
+      <sval type="int" val="11"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="513"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-536863481"/>
+      <sval type="int" val="-536862713"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="51"/>
+      <sval type="int" val="49"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="705"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610604792"/>
+      <sval type="int" val="-1610604024"/>
       <sval type="int" val="12"/>
       <sval type="int" val="2033"/>
     </sval>
@@ -445,24 +453,20 @@
       <sval type="int" val="131075"/>
       <sval type="int" val="10"/>
     </sval>
-    <sval type="array" size="5">
-      <sval type="int" val="2429"/>
+    <sval type="array" size="7">
+      <sval type="int" val="1072"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="3"/>
+      <sval type="int" val="-536861436"/>
       <sval type="string" val="!move.movetostation.check"/>
-    </sval>
-    <sval type="array" size="4">
-      <sval type="int" val="131"/>
-      <sval type="int" val="-536861948"/>
       <sval type="int" val="131074"/>
-      <sval type="int" val="3"/>
+      <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="1462"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="4"/>
+      <sval type="int" val="2"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="443"/>
     </sval>
@@ -472,7 +476,7 @@
       <sval type="int" val="1"/>
       <sval type="string" val="!move.movetostation.check"/>
       <sval type="int" val="131074"/>
-      <sval type="int" val="4"/>
+      <sval type="int" val="2"/>
       <sval type="int" val="4"/>
       <sval type="int" val="100"/>
       <sval type="int" val="131074"/>
@@ -487,63 +491,10 @@
       <sval type="int" val="0"/>
     </sval>
     <sval type="array" size="6">
-      <sval type="int" val="705"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="1"/>
-      <sval type="int" val="-1610601981"/>
-      <sval type="int" val="12"/>
-      <sval type="int" val="2061"/>
-    </sval>
-    <sval type="array" size="6">
-      <sval type="int" val="705"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="-1610601981"/>
-      <sval type="int" val="12"/>
-      <sval type="int" val="2004"/>
-    </sval>
-    <sval type="array" size="8">
-      <sval type="int" val="102"/>
-      <sval type="string" val="!move.movetostation.drone"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="1"/>
-      <sval type="int" val="1"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="0"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="1167"/>
-      <sval type="int" val="55"/>
-    </sval>
-    <sval type="array" size="13">
-      <sval type="int" val="104"/>
-      <sval type="int" val="-1610602232"/>
-      <sval type="int" val="3"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="19"/>
-      <sval type="int" val="15"/>
-      <sval type="int" val="15"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="3"/>
-      <sval type="int" val="-1"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="-2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="112"/>
-      <sval type="int" val="51"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="112"/>
-      <sval type="int" val="7"/>
-    </sval>
-    <sval type="array" size="6">
       <sval type="int" val="618"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-1610600701"/>
+      <sval type="int" val="-1610601981"/>
       <sval type="int" val="9"/>
       <sval type="int" val="1048595"/>
     </sval>
@@ -551,7 +502,7 @@
       <sval type="int" val="705"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610600701"/>
+      <sval type="int" val="-1610601981"/>
       <sval type="int" val="12"/>
       <sval type="int" val="2004"/>
     </sval>
@@ -559,14 +510,14 @@
       <sval type="int" val="1845"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="5"/>
+      <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610600696"/>
+      <sval type="int" val="-1610601976"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131074"/>
-      <sval type="int" val="5"/>
+      <sval type="int" val="4"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
       <sval type="int" val="15"/>
@@ -588,7 +539,7 @@
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-536858361"/>
+      <sval type="int" val="-536859641"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="11"/>
@@ -605,77 +556,21 @@
       <sval type="int" val="501"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="0"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="1167"/>
-      <sval type="int" val="55"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="112"/>
-      <sval type="int" val="7"/>
-    </sval>
-    <sval type="array" size="7">
-      <sval type="int" val="104"/>
-      <sval type="int" val="-1610598909"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="1"/>
-      <sval type="int" val="-1"/>
-    </sval>
-    <sval type="array" size="8">
-      <sval type="int" val="2107"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="1"/>
-      <sval type="int" val="-1610598909"/>
-      <sval type="int" val="5"/>
-      <sval type="string" val="!move.movetostation.check"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="4"/>
-    </sval>
-    <sval type="array" size="18">
-      <sval type="int" val="1017"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="1"/>
-      <sval type="string" val="!lib.interrupt"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="100"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-    </sval>
-    <sval type="array" size="3">
-      <sval type="int" val="103"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="101"/>
-      <sval type="string" val="sub.Signal.Docking"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610597629"/>
+      <sval type="int" val="-1610600701"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="705"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610597624"/>
+      <sval type="int" val="-1610600696"/>
       <sval type="int" val="12"/>
       <sval type="int" val="2033"/>
     </sval>
@@ -699,6 +594,62 @@
       <sval type="int" val="4"/>
       <sval type="int" val="200"/>
     </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="11"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="51"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="101"/>
+      <sval type="string" val="sub.EndTask"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610598653"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="8">
+      <sval type="int" val="2107"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1610598648"/>
+      <sval type="int" val="5"/>
+      <sval type="string" val="!move.movetostation.check"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="18">
+      <sval type="int" val="1017"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="!lib.interrupt"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="100"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
     <sval type="array" size="1">
       <sval type="int" val="1168"/>
     </sval>
@@ -714,104 +665,100 @@
       <sval type="string" val="station"/>
     </sval>
   </sval>
-  <sval type="array" size="41">
+  <sval type="array" size="36">
     <sval type="array" size="2">
-      <sval type="int" val="5"/>
+      <sval type="int" val="6"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="7"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="6"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="10"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="11"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="14"/>
       <sval type="int" val="7"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="10"/>
+      <sval type="int" val="14"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="12"/>
+      <sval type="int" val="22"/>
+      <sval type="int" val="6"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="22"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="22"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="26"/>
+      <sval type="int" val="6"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="26"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="26"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="30"/>
+      <sval type="int" val="6"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="30"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="30"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="32"/>
       <sval type="int" val="7"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="12"/>
-      <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="19"/>
-      <sval type="int" val="6"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="19"/>
-      <sval type="int" val="4"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="19"/>
-      <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="23"/>
-      <sval type="int" val="6"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="23"/>
-      <sval type="int" val="4"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="23"/>
-      <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="27"/>
-      <sval type="int" val="6"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="27"/>
-      <sval type="int" val="4"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="27"/>
-      <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="29"/>
-      <sval type="int" val="7"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="29"/>
+      <sval type="int" val="32"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="3">
-      <sval type="int" val="29"/>
+      <sval type="int" val="32"/>
       <sval type="int" val="1"/>
       <sval type="string" val="tell carrier to stop moving"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="31"/>
+      <sval type="int" val="34"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="3">
-      <sval type="int" val="31"/>
+      <sval type="int" val="34"/>
       <sval type="int" val="1"/>
       <sval type="string" val="Start docking lockup fix in parallel to main docking task"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="35"/>
+      <sval type="int" val="37"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="35"/>
+      <sval type="int" val="37"/>
       <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="41"/>
-      <sval type="int" val="7"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="42"/>
-      <sval type="int" val="6"/>
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="42"/>
@@ -826,16 +773,21 @@
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="47"/>
-      <sval type="int" val="4"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="47"/>
-      <sval type="int" val="4"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="47"/>
+      <sval type="int" val="44"/>
       <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="44"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="remove ship from array"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="47"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="49"/>
+      <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="49"/>
@@ -843,46 +795,25 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="51"/>
-      <sval type="int" val="4"/>
+      <sval type="int" val="2"/>
     </sval>
-    <sval type="array" size="2">
+    <sval type="array" size="3">
       <sval type="int" val="51"/>
-      <sval type="int" val="2"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="================="/>
     </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="54"/>
-      <sval type="int" val="4"/>
+    <sval type="array" size="3">
+      <sval type="int" val="51"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="End tasks"/>
     </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="54"/>
-      <sval type="int" val="4"/>
+    <sval type="array" size="3">
+      <sval type="int" val="51"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="================="/>
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="55"/>
-      <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="3">
-      <sval type="int" val="55"/>
-      <sval type="int" val="1"/>
-      <sval type="string" val="==========================="/>
-    </sval>
-    <sval type="array" size="3">
-      <sval type="int" val="55"/>
-      <sval type="int" val="1"/>
-      <sval type="string" val="Remove ship from docking queue of carrier. "/>
-    </sval>
-    <sval type="array" size="3">
-      <sval type="int" val="55"/>
-      <sval type="int" val="1"/>
-      <sval type="string" val="==========================="/>
-    </sval>
-    <sval type="array" size="3">
-      <sval type="int" val="56"/>
-      <sval type="int" val="1"/>
-      <sval type="string" val="remove ship from array"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="59"/>
       <sval type="int" val="4"/>
     </sval>
   </sval>
@@ -890,5 +821,5 @@
 </sval>
 
 </codearray>
-<nosignature>1688</nosignature>
+<nosignature>9607</nosignature>
 </script>
