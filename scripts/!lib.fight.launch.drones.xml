@@ -1,0 +1,177 @@
+<?xml version="1.0" standalone="yes" ?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl" ?>
+<script>
+<name>!lib.fight.launch.drones</name>
+<version>1</version>
+<engineversion>73</engineversion>
+<description>Launch fighter drones if they weren't launched recently</description>
+<arguments>
+<argument index="1" name="attacker" type="Var/Ship/Station" desc="" />
+<argument index="2" name="min" type="Var/Number" desc="" />
+<argument index="3" name="max" type="Var/Number" desc="" />
+</arguments>
+<sourceplaintext>
+<![CDATA[
+  skip if [THIS] ->get should drop drones
+    return null
+  $drone.time = [THIS] -> get local variable: name='drop.drones'
+  $time = playing time
+  do if $drone.time AND $time <= ( $drone.time + 180 )
+    return null
+  [THIS] ->set local variable: name='drop.drones' value=null
+  $rnd = random value from $min to $max - 1
+  do if [THIS] -> launch $rnd fight drones: protect me or attack target=$attacker
+    [THIS] ->set local variable: name='drop.drones' value=$time
+  return null
+]]>
+</sourceplaintext>
+<sourcetext>
+<line indent=""><var>skip&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;should&#160;drop&#160;drones</text></line>
+<line indent="&#160;"><text>return&#160;</text><var>null</var></line>
+<line indent=""><var>$drone.time&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;local&#160;variable:&#160;name=</text><var>'drop.drones'</var></line>
+<line indent=""><var>$time&#160;=&#160;</var><text>playing&#160;time</text></line>
+<line indent=""><var>do&#160;if&#160;</var><var>$drone.time</var><text>&#160;</text><var>AND</var><text>&#160;</text><var>$time</var><text>&#160;</text><var>&lt;=</var><text>&#160;</text><var>(</var><text>&#160;</text><var>$drone.time</var><text>&#160;</text><var>+</var><text>&#160;</text><var>180</var><text>&#160;</text><var>)</var></line>
+<line indent="&#160;"><text>return&#160;</text><var>null</var></line>
+<line indent=""><var>[THIS]&#160;-&gt;</var><text>set&#160;local&#160;variable:&#160;name=</text><var>'drop.drones'</var><text>&#160;value=</text><var>null</var></line>
+<line indent=""><var>$rnd&#160;=&#160;</var><text>random&#160;value&#160;from&#160;</text><var>$min</var><text>&#160;to&#160;</text><var>$max</var><text>&#160;-&#160;1</text></line>
+<line indent=""><var>do&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;launch&#160;</text><var>$rnd</var><text>&#160;fight&#160;drones:&#160;protect&#160;me&#160;or&#160;attack&#160;target=</text><var>$attacker</var></line>
+<line indent="&#160;"><var>[THIS]&#160;-&gt;</var><text>set&#160;local&#160;variable:&#160;name=</text><var>'drop.drones'</var><text>&#160;value=</text><var>$time</var></line>
+<line indent=""><text>return&#160;</text><var>null</var></line>
+</sourcetext>
+<codearray>
+
+<sval type="array" size="10">
+  <sval type="string" val="!lib.fight.launch.drones"/>
+  <sval type="int" val="73"/>
+  <sval type="string" val="Launch fighter drones if they weren't launched recently"/>
+  <sval type="int" val="1"/>
+  <sval type="int" val="0"/>
+  <sval type="array" size="6">
+    <sval type="string" val="attacker"/>
+    <sval type="string" val="min"/>
+    <sval type="string" val="max"/>
+    <sval type="string" val="drone.time"/>
+    <sval type="string" val="time"/>
+    <sval type="string" val="rnd"/>
+  </sval>
+  <sval type="array" size="11">
+    <sval type="array" size="4">
+      <sval type="int" val="2692"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-536870393"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="156"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="5"/>
+      <sval type="string" val="drop.drones"/>
+      <sval type="int" val="3"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="141"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="27">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610611192"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="180"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="-2"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="-3"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-4"/>
+      <sval type="int" val="17"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="155"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="5"/>
+      <sval type="string" val="drop.drones"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="110"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="8">
+      <sval type="int" val="546"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1610610168"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="155"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="5"/>
+      <sval type="string" val="drop.drones"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+  </sval>
+  <sval type="array" size="3">
+    <sval type="array" size="2">
+      <sval type="int" val="22"/>
+      <sval type="string" val=""/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="10"/>
+      <sval type="string" val=""/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="10"/>
+      <sval type="string" val=""/>
+    </sval>
+  </sval>
+  <sval type="int" val="0"/>
+  <sval type="int" val="0"/>
+</sval>
+
+</codearray>
+<nosignature>2524</nosignature>
+</script>
