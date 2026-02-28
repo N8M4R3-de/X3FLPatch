@@ -576,6 +576,7 @@ Added new script commands
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
 	Added docking lockup fix to improve ships/drones docking at carriers	
+	Fixed Face/Voice mismatch for speakers
 	Improved random music generator
 	Improved paranid reputation diplomacy during FL plot
 	
