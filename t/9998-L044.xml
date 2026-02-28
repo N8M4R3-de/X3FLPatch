@@ -146,6 +146,8 @@
 
 <page id="392010" title="Script Cmd Names" descr="0" voice="no">
  <t id="9600">Upgrade factories</t>
+ <t id="100009">Repair all ships with drones</t>
+ <t id="100013">Repair ship/station with drones</t>
 </page>
 
 <page id="392011" title="Script Cmd Shorts" descr="0" voice="no">

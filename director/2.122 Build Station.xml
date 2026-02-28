@@ -192,7 +192,12 @@
               <set_value name="L2M122 Offer.SectorChanges" exact="0"/>
 				<do_choose>
 					<do_when value="{value@L2M122.OfferRace}" exact="{lookup.race@goner}">
-						<create_actor name="L2M122 Offer.Guide" race="{value@L2M122.OfferRace}" object="L2M122.station" location="crew"/>
+						<do_any>
+							<create_actor name="L2M122 Offer.Guide" race="goner" voice="110" face="901" object="L2M122.station" location="crew"/>
+							<create_actor name="L2M122 Offer.Guide" race="goner" voice="111" face="901" object="L2M122.station" location="crew"/>
+							<create_actor name="L2M122 Offer.Guide" race="goner" voice="110" face="902" object="L2M122.station" location="crew"/>
+							<create_actor name="L2M122 Offer.Guide" race="goner" voice="111" face="902" object="L2M122.station" location="crew"/>
+						</do_any>
 					</do_when>
 					<do_otherwise>
 						<create_actor name="L2M122 Offer.Guide" race="{value@L2M122.OfferRace}" voiceflags="32" object="L2M122.station" location="crew"/>

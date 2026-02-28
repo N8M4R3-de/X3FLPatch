@@ -575,8 +575,10 @@ Added new script commands
 1.3.20
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
-	Added docking lockup fix to improve ships/drones docking at carriers
   Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
+	Added docking lockup fix to improve ships/drones docking at carriers	
+	Fixed Face/Voice mismatch for speakers
+	Fixed creating some missions for Goners
 	Improved random music generator
 	Improved paranid reputation diplomacy during FL plot
 	
