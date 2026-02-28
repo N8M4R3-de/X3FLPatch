@@ -90,7 +90,12 @@
                       </do_if>
 						<do_choose>
 							<do_when value="{value@this.OfferRace}" exact="{lookup.race@goner}">
-								<create_actor race="{lookup.race@argon}" object="this.OfferStation" voiceflags="32" name="this.Offerguy" location="crew"/>
+								<do_any>
+									<create_actor name="this.Offerguy" race="goner" voice="110" face="901" object="this.OfferStation"/>
+									<create_actor name="this.Offerguy" race="goner" voice="111" face="901" object="this.OfferStation"/>
+									<create_actor name="this.Offerguy" race="goner" voice="110" face="902" object="this.OfferStation"/>
+									<create_actor name="this.Offerguy" race="goner" voice="111" face="902" object="this.OfferStation"/>
+								</do_any>
 							</do_when>
 							<do_otherwise>
 								<create_actor race="{value@this.OfferRace}" object="this.OfferStation" voiceflags="32" name="this.Offerguy" location="crew"/>
