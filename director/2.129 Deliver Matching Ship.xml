@@ -136,14 +136,19 @@
                       <cancel_cue cue="L2M129"/>
                     </do_when>
                     <do_otherwise>
-                      <do_choose>
-                        <do_when value="{value@L2M129.Ship Race}" exact="{lookup.race@goner}">
-                          <create_actor name="L2M129.Offer Actor" race="argon" object="L2M129.DestStation" voiceflags="32"/>
-                        </do_when>
-                        <do_otherwise>
-                          <create_actor name="L2M129.Offer Actor" race="{value@L2M129.Ship Race}" object="L2M129.DestStation" voiceflags="32"/>
-                        </do_otherwise>
-                      </do_choose>
+						<do_choose>
+							<do_when value="{value@L2M129.Ship Race}" exact="{lookup.race@goner}">
+								<do_any>
+									<create_actor name="L2M129.Offer Actor" race="goner" voice="110" face="901" object="L2M129.DestStation"/>
+									<create_actor name="L2M129.Offer Actor" race="goner" voice="111" face="901" object="L2M129.DestStation"/>
+									<create_actor name="L2M129.Offer Actor" race="goner" voice="110" face="902" object="L2M129.DestStation"/>
+									<create_actor name="L2M129.Offer Actor" race="goner" voice="111" face="902" object="L2M129.DestStation"/>
+								</do_any>
+							</do_when>
+							<do_otherwise>
+								<create_actor name="L2M129.Offer Actor" race="{value@L2M129.Ship Race}" object="L2M129.DestStation" voiceflags="32"/>
+							</do_otherwise>
+						</do_choose>
                       <create_offer actor="L2M129.Offer Actor" conversation="L2OfferShip" cue="L2M129" discipline="XXXT"/>
                       <set_value name="L2M129.Step" exact="1"/>
                       <set_value name="L2M129.Use Typename" list="0|1"/>

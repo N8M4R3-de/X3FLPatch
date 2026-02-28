@@ -100,14 +100,20 @@
               <action>
                 <do_all>
                   <set_value name="L2M133.OfferRace" exact="{object.race@L2M133.OfferStation}"/>
-                  <do_choose>
-                    <do_when value="{value@L2M133.OfferRace}" exact="{lookup.race@goner}">
-                      <create_actor name="L2M133.OfferActor" race="argon" object="L2M133.OfferStation" location="crew" voiceflags="32"/>
-                    </do_when>
-                    <do_otherwise>
-                      <create_actor name="L2M133.OfferActor" race="{value@L2M133.OfferRace}" object="L2M133.OfferStation" location="crew" voiceflags="32"/>
-                    </do_otherwise>
-                  </do_choose>
+					<do_choose>
+						<do_when value="{value@L2M133.OfferRace}" exact="{lookup.race@goner}">
+							<do_any>
+								<create_actor name="L2M133.OfferActor" race="goner" voice="110" face="901" object="L2M133.OfferStation"/>
+								<create_actor name="L2M133.OfferActor" race="goner" voice="111" face="901" object="L2M133.OfferStation"/>
+								<create_actor name="L2M133.OfferActor" race="goner" voice="110" face="902" object="L2M133.OfferStation"/>
+								<create_actor name="L2M133.OfferActor" race="goner" voice="111" face="902" object="L2M133.OfferStation"/>
+							</do_any>
+						</do_when>
+						<do_otherwise>
+							<create_actor name="L2M133.OfferActor" race="{value@L2M133.OfferRace}" object="L2M133.OfferStation" location="crew" voiceflags="32"/>
+						</do_otherwise>
+					</do_choose>
+
                   <create_offer actor="L2M133.OfferActor" conversation="L2OfferNormal" cue="L2M133 Patrol" discipline="XXXT"/>
 
                   <set_value name="L2M133.TextID Title P" exact="{value@L2M133.Variation}001"/>

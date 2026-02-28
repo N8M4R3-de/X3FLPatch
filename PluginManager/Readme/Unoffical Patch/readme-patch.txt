@@ -575,8 +575,11 @@ Added new script commands
 1.3.20
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
-	Added docking lockup fix to improve ships/drones docking at carriers
+	Fixed Face/Voice mismatch for speakers
+	Fixed creating some missions for Goners
+  Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
 	Added ship Ugrades to missing Corporation Docks
+	Added docking lockup fix to improve ships/drones docking at carriers	
 	Improved random music generator
 	Improved paranid reputation diplomacy during FL plot
 	Removed Build Command Software MK1 from Pirate Bases
@@ -585,6 +588,7 @@ Added new script commands
 	Fixed getDialogRace script command
 	Fixed is docking allowed command to work with freight drones on larger ships.
 	Fixed Side Menu in custom menus overlapping monitor
+	Fixed LFL event triggers in MD
 	Added Fire lasers ahead script command
 	Added Reset S/M/L shipyard state script command
 	Increased max number of lasers per turret to 80
