@@ -575,7 +575,6 @@ Added new script commands
 1.3.20
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
-	Added docking lockup fix to improve ships/drones docking at carriers
 	Added some descriptions for Drone Carrier commands
 	Drone Carrier repair targets interrupt current task to stop in space until repaired (non-player owned ships only).
 	Drones of killed NPC Drone Carriers will now do [COMMAND_DESTROY_THIS] to avoid clogging universe.
@@ -595,8 +594,15 @@ Added new script commands
       Improved CPU efficiency.
       Drones won't collect wares undiscovered by player.
     Fixed and improved Drone Carrier command 'Resupply ships with drones'
+	Fixed Face/Voice mismatch for speakers
+	Fixed creating some missions for Goners
+  Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
+	Added ship Ugrades to missing Corporation Docks
+	Added docking lockup fix to improve ships/drones docking at carriers	
 	Improved random music generator
-	Improved paranid reputation diplomacy during FL plot    
+	Improved paranid reputation diplomacy during FL plot
+	Removed Build Command Software MK1 from Pirate Bases
+	
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
 	Fixed is docking allowed command to work with freight drones on larger ships.
