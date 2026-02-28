@@ -182,15 +182,20 @@
             <cue name="L2M105 Return Ship" version="2">
               <action>
                 <do_all>
-                  <do_choose>
-                    <do_when value="{value@L2M105.OfferRace}" exact="{lookup.race@goner}">
-                      <create_actor name="L2M105.OfferActor" race="argon" voiceflags="32" object="L2M105.OfferStation"/>
-                    </do_when>
-                    <do_otherwise>
-                      <create_actor name="L2M105.OfferActor" race="{value@L2M105.OfferRace}" voiceflags="32" object="L2M105.OfferStation"/>
-                    </do_otherwise>
-                  </do_choose>
-                  <create_offer actor="L2M105.OfferActor" conversation="L2OfferNormal" cue="L2M105 Return Ship" discipline="XXXT"/>
+					<do_choose>
+						<do_when value="{value@L2M105.OfferRace}" exact="{lookup.race@goner}">
+							<do_any>
+								<create_actor name="L2M105.OfferActor" race="goner" voice="110" face="901" object="L2M105.OfferStation" location="crew"/>
+								<create_actor name="L2M105.OfferActor" race="goner" voice="111" face="901" object="L2M105.OfferStation" location="crew"/>
+								<create_actor name="L2M105.OfferActor" race="goner" voice="110" face="902" object="L2M105.OfferStation" location="crew"/>
+								<create_actor name="L2M105.OfferActor" race="goner" voice="111" face="902" object="L2M105.OfferStation" location="crew"/>
+							</do_any>
+						</do_when>
+						<do_otherwise>
+							<create_actor name="L2M105.OfferActor" race="{value@L2M105.OfferRace}" voiceflags="32" object="L2M105.OfferStation"/>
+						</do_otherwise>
+					</do_choose>
+					<create_offer actor="L2M105.OfferActor" conversation="L2OfferNormal" cue="L2M105 Return Ship" discipline="XXXT"/>
                   <set_value name="L2M105 Return Ship.Difficulty" exact="{value@L2M105.SectorDistance}+1"/>
                   <do_choose>
                     <do_when value="{player.notoriety.{value@L2M105.OfferRace}.rank}" max="0">

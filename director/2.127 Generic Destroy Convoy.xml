@@ -408,8 +408,20 @@
                               <set_group_command group="L2M127.Escorts" command="protect" commandobject="{group.leader@L2M127.Ships}"/>
                               <set_group_command group="L2M127.Ships" command="follow" commandobject="{group.leader@L2M127.Ships}"/>
                               <set_command object="{group.leader@L2M127.Ships}" command="idle"/>
-                              <create_actor name="L2M127.OfferActor" race="{value@L2M127.OfferRace}" object="L2M127.Offer Station" voiceflags="32"/>
-                              <create_offer actor="L2M127.OfferActor" conversation="L2OfferCombat" cue="L2M127 Convoy Offers" discipline="XFXX"/>
+					          <do_choose>
+							    <do_when value="{value@L2M127.OfferRace}" exact="{lookup.race@goner}">
+								  <do_any>
+								    <create_actor name="L2M127.OfferActor" race="goner" voice="110" face="901" object="L2M127.Offer Station"/>
+									<create_actor name="L2M127.OfferActor" race="goner" voice="111" face="901" object="L2M127.Offer Station"/>
+									<create_actor name="L2M127.OfferActor" race="goner" voice="110" face="902" object="L2M127.Offer Station"/>
+									<create_actor name="L2M127.OfferActor" race="goner" voice="111" face="902" object="L2M127.Offer Station"/>
+								  </do_any>
+								</do_when>
+								<do_otherwise>
+								  <create_actor name="L2M127.OfferActor" race="{value@L2M127.OfferRace}" object="L2M127.Offer Station" voiceflags="32"/>
+								</do_otherwise>
+							  </do_choose>
+							  <create_offer actor="L2M127.OfferActor" conversation="L2OfferCombat" cue="L2M127 Convoy Offers" discipline="XFXX"/>
                               <set_value name="L2M127 Convoy Offers.Difficulty" min="{lookup.level@veryeasy}" max="{lookup.level@veryhard}"/>
                             </do_all>
                           </action>
