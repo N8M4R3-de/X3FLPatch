@@ -577,7 +577,8 @@ Added new script commands
 	Fixed hyperlink highlighting correct position due to word wrap
 	Fixed Face/Voice mismatch for speakers
 	Fixed creating some missions for Goners
-  Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
+	Fixed player owned mercenary stations
+	Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
 	Added ship Ugrades to missing Corporation Docks
 	Added docking lockup fix to improve ships/drones docking at carriers	
 	Improved random music generator
