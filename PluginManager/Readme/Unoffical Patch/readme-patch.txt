@@ -579,12 +579,14 @@ Added new script commands
 	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector	Added docking lockup fix to improve ships/drones docking at carriers	
 	Fixed Face/Voice mismatch for speakers
 	Fixed creating some missions for Goners
-  Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
+	Fixed player owned mercenary stations
+	Fixed indestructable ships (on game load)
+	Improved freight drone docking. Drone can now use "Dock at" command. Drones transfer wares to target ship or space when docking
 	Added ship Ugrades to missing Corporation Docks
 	Added docking lockup fix to improve ships/drones docking at carriers	
 	Improved random music generator
 	Improved paranid reputation diplomacy during FL plot
-	Removed Build Command Software MK1 from Pirate Bases
+	Removed Build Command Software MK1 from Pirate Bases	
 	
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
