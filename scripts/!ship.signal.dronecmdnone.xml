@@ -36,7 +36,6 @@
       while $i
         dec $i = 
         $d = $drones[$i]
-@       = $d -> call script plugin.jj.lib.log.object :  prepend='Command None from Signal_none'  logFile=1986
         START $d -> command COMMAND_NONE : arg1=null, arg2=null, arg3=null, arg4=null
       end
     end
@@ -75,7 +74,6 @@
 <line indent="&#160;&#160;"><var>while&#160;</var><var>$i</var></line>
 <line indent="&#160;&#160;&#160;"><text>dec&#160;</text><var>$i&#160;=&#160;</var></line>
 <line indent="&#160;&#160;&#160;"><var>$d&#160;=&#160;</var><var>$drones</var><text>[</text><var>$i</var><text>]</text></line>
-<line interruptable="@" indent="&#160;&#160;&#160;"><var>=&#160;</var><var>$d&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>plugin.jj.lib.log.object</call><text>&#160;:&#160;</text><text>&#160;prepend=</text><var>'Command&#160;None&#160;from&#160;Signal_none'</var><text>&#160;</text><text>&#160;logFile=</text><var>1986</var></line>
 <line indent="&#160;&#160;&#160;"><text>START&#160;</text><var>$d&#160;-&gt;</var><text>&#160;command&#160;</text><var>COMMAND_NONE</var><text>&#160;:&#160;arg1=</text><var>null</var><text>,&#160;arg2=</text><var>null</var><text>,&#160;arg3=</text><var>null</var><text>,&#160;arg4=</text><var>null</var></line>
 <line indent="&#160;&#160;"><text>end</text></line>
 <line indent="&#160;"><text>end</text></line>
@@ -106,7 +104,7 @@
     <sval type="string" val="d"/>
     <sval type="string" val="signalKilled"/>
   </sval>
-  <sval type="array" size="31">
+  <sval type="array" size="30">
     <sval type="array" size="4">
       <sval type="int" val="2812"/>
       <sval type="int" val="1"/>
@@ -220,7 +218,7 @@
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="129"/>
-      <sval type="int" val="-1610605821"/>
+      <sval type="int" val="-1610606077"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="2"/>
       <sval type="int" val="131074"/>
@@ -236,7 +234,7 @@
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610605821"/>
+      <sval type="int" val="-1610606077"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="7"/>
@@ -251,7 +249,7 @@
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610605815"/>
+      <sval type="int" val="-1610606071"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="3"/>
@@ -269,18 +267,6 @@
       <sval type="int" val="7"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="3"/>
-    </sval>
-    <sval type="array" size="10">
-      <sval type="int" val="102"/>
-      <sval type="string" val="plugin.jj.lib.log.object"/>
-      <sval type="int" val="-2147483647"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="8"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="5"/>
-      <sval type="string" val="Command None from Signal_none"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="1986"/>
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="514"/>
@@ -311,7 +297,7 @@
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610605048"/>
+      <sval type="int" val="-1610605304"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="9"/>
@@ -366,19 +352,19 @@
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="27"/>
+      <sval type="int" val="26"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="27"/>
+      <sval type="int" val="26"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="27"/>
+      <sval type="int" val="26"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="27"/>
+      <sval type="int" val="26"/>
       <sval type="int" val="2"/>
     </sval>
   </sval>
@@ -386,5 +372,5 @@
 </sval>
 
 </codearray>
-<nosignature>7908</nosignature>
+<nosignature>3944</nosignature>
 </script>
