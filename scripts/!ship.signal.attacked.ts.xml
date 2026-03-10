@@ -102,27 +102,27 @@
   sub.GetDronesThreshold:
   $shield = [THIS] -> get shield percent
   if $shield < 50
-    $threshold = 100
+    $threshold = 90
   else if not $attacker -> exists
-    $threshold = 20
+    $threshold = 15
   else if $attacker -> is of class Little Ship
     if $attacker -> is of class M5
-      $threshold = 20
+      $threshold = 15
     else if $attacker -> is of class M4
-      $threshold = 30
+      $threshold = 25
     else if $attacker -> is of class M3
-      $threshold = 60
+      $threshold = 50
     else
       $threshold = 30
     end
   else if $attacker -> is of class TM
-    $threshold = 50
+    $threshold = 40
   else if $attacker -> is of class Moveable Ship
   * Big or huge ship
-    $threshold = 85
+    $threshold = 80
   else
   * Stationary stuff, most likely lasertower
-    $threshold = 20
+    $threshold = 15
   end
   endsub
   return null
@@ -220,27 +220,27 @@
 <line indent=""><var>sub.GetDronesThreshold</var><text>:</text></line>
 <line indent=""><var>$shield&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;shield&#160;percent</text></line>
 <line indent=""><var>if&#160;</var><var>$shield</var><text>&#160;</text><var>&lt;</var><text>&#160;</text><var>50</var></line>
-<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>100</var></line>
+<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>90</var></line>
 <line indent=""><var>else&#160;if&#160;not&#160;</var><var>$attacker&#160;-&gt;</var><text>&#160;exists</text></line>
-<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>20</var></line>
+<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>15</var></line>
 <line indent=""><var>else&#160;if&#160;</var><var>$attacker&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Little&#160;Ship</var></line>
 <line indent="&#160;"><var>if&#160;</var><var>$attacker&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>M5</var></line>
-<line indent="&#160;&#160;"><var>$threshold&#160;=&#160;</var><var>20</var></line>
+<line indent="&#160;&#160;"><var>$threshold&#160;=&#160;</var><var>15</var></line>
 <line indent="&#160;"><var>else&#160;if&#160;</var><var>$attacker&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>M4</var></line>
-<line indent="&#160;&#160;"><var>$threshold&#160;=&#160;</var><var>30</var></line>
+<line indent="&#160;&#160;"><var>$threshold&#160;=&#160;</var><var>25</var></line>
 <line indent="&#160;"><var>else&#160;if&#160;</var><var>$attacker&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>M3</var></line>
-<line indent="&#160;&#160;"><var>$threshold&#160;=&#160;</var><var>60</var></line>
+<line indent="&#160;&#160;"><var>$threshold&#160;=&#160;</var><var>50</var></line>
 <line indent="&#160;"><text>else</text></line>
 <line indent="&#160;&#160;"><var>$threshold&#160;=&#160;</var><var>30</var></line>
 <line indent="&#160;"><text>end</text></line>
 <line indent=""><var>else&#160;if&#160;</var><var>$attacker&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>TM</var></line>
-<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>50</var></line>
+<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>40</var></line>
 <line indent=""><var>else&#160;if&#160;</var><var>$attacker&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>Moveable&#160;Ship</var></line>
 <line indent=""><comment><text>*&#160;</text><var>Big&#160;or&#160;huge&#160;ship</var></comment></line>
-<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>85</var></line>
+<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>80</var></line>
 <line indent=""><text>else</text></line>
 <line indent=""><comment><text>*&#160;</text><var>Stationary&#160;stuff,&#160;most&#160;likely&#160;lasertower</var></comment></line>
-<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>20</var></line>
+<line indent="&#160;"><var>$threshold&#160;=&#160;</var><var>15</var></line>
 <line indent=""><text>end</text></line>
 <line indent=""><text>endsub</text></line>
 <line indent=""><text>return&#160;</text><var>null</var></line>
@@ -862,7 +862,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="100"/>
+      <sval type="int" val="90"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -881,7 +881,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="20"/>
+      <sval type="int" val="15"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -910,7 +910,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="20"/>
+      <sval type="int" val="15"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -931,7 +931,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="30"/>
+      <sval type="int" val="25"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -952,7 +952,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="60"/>
+      <sval type="int" val="50"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -986,7 +986,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="50"/>
+      <sval type="int" val="40"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -1007,7 +1007,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="85"/>
+      <sval type="int" val="80"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -1020,7 +1020,7 @@
       <sval type="int" val="6"/>
       <sval type="int" val="1"/>
       <sval type="int" val="4"/>
-      <sval type="int" val="20"/>
+      <sval type="int" val="15"/>
       <sval type="int" val="1"/>
       <sval type="int" val="-1"/>
     </sval>
@@ -1227,5 +1227,5 @@
 </sval>
 
 </codearray>
-<nosignature>3950</nosignature>
+<nosignature>9093</nosignature>
 </script>
