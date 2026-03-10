@@ -19,11 +19,8 @@
 @   = wait randomly from 4000 to 7000 ms
     $repairers = [THIS] -> get local variable: name='ships.repairers'
     
-@   = [THIS] -> call script plugin.jj.lib.log.object :  prepend='Waiting for repair loop.'  logFile=9898
-    
     if $repairers
       $i = size of array $repairers
-      write to log file #9898  append=[TRUE]  printf: fmt='ships.repairers: %s', $i, null, null, null, null
       while $i
         dec $i = 
         $repairer = $repairers[$i]
@@ -43,7 +40,6 @@
     skip if $m7ds
       break
     $i = size of array $m7ds
-    write to log file #9898  append=[TRUE]  printf: fmt='ships.repairers.m7d: %s', $i, null, null, null, null
     skip if $i
       break
     while $i
@@ -72,7 +68,6 @@
   [THIS] ->set local variable: name='ships.repairers' value=null
   [THIS] ->set local variable: name='ships.repairers.m7d' value=null
   [THIS] ->remove secondary signal: signal=SIGNAL_REPAIRED, name='Repair.Signal'
-@ = [THIS] -> call script plugin.jj.lib.log.object :  prepend='Wait for repair finished'  logFile=9898
   return null
 ]]>
 </sourceplaintext>
@@ -87,11 +82,8 @@
 <line interruptable="@" indent="&#160;"><var>=&#160;</var><text>wait&#160;randomly&#160;from&#160;</text><var>4000</var><text>&#160;to&#160;</text><var>7000</var><text>&#160;ms</text></line>
 <line indent="&#160;"><var>$repairers&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;local&#160;variable:&#160;name=</text><var>'ships.repairers'</var></line>
 <line indent="&#160;"></line>
-<line interruptable="@" indent="&#160;"><var>=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>plugin.jj.lib.log.object</call><text>&#160;:&#160;</text><text>&#160;prepend=</text><var>'Waiting&#160;for&#160;repair&#160;loop.'</var><text>&#160;</text><text>&#160;logFile=</text><var>9898</var></line>
-<line indent="&#160;"></line>
 <line indent="&#160;"><var>if&#160;</var><var>$repairers</var></line>
 <line indent="&#160;&#160;"><var>$i&#160;=&#160;</var><text>size&#160;of&#160;array&#160;</text><var>$repairers</var></line>
-<line indent="&#160;&#160;"><text>write&#160;to&#160;log&#160;file&#160;#</text><var>9898</var><text>&#160;&#160;append=</text><var>[TRUE]</var><text>&#160;&#160;printf:&#160;fmt=</text><var>'ships.repairers:&#160;%s'</var><text>,&#160;</text><var>$i</var><text>,&#160;</text><var>null</var><text>,&#160;</text><var>null</var><text>,&#160;</text><var>null</var><text>,&#160;</text><var>null</var></line>
 <line indent="&#160;&#160;"><var>while&#160;</var><var>$i</var></line>
 <line indent="&#160;&#160;&#160;"><text>dec&#160;</text><var>$i&#160;=&#160;</var></line>
 <line indent="&#160;&#160;&#160;"><var>$repairer&#160;=&#160;</var><var>$repairers</var><text>[</text><var>$i</var><text>]</text></line>
@@ -111,7 +103,6 @@
 <line indent="&#160;"><var>skip&#160;if&#160;</var><var>$m7ds</var></line>
 <line indent="&#160;&#160;"><text>break</text></line>
 <line indent="&#160;"><var>$i&#160;=&#160;</var><text>size&#160;of&#160;array&#160;</text><var>$m7ds</var></line>
-<line indent="&#160;"><text>write&#160;to&#160;log&#160;file&#160;#</text><var>9898</var><text>&#160;&#160;append=</text><var>[TRUE]</var><text>&#160;&#160;printf:&#160;fmt=</text><var>'ships.repairers.m7d:&#160;%s'</var><text>,&#160;</text><var>$i</var><text>,&#160;</text><var>null</var><text>,&#160;</text><var>null</var><text>,&#160;</text><var>null</var><text>,&#160;</text><var>null</var></line>
 <line indent="&#160;"><var>skip&#160;if&#160;</var><var>$i</var></line>
 <line indent="&#160;&#160;"><text>break</text></line>
 <line indent="&#160;"><var>while&#160;</var><var>$i</var></line>
@@ -140,7 +131,6 @@
 <line indent=""><var>[THIS]&#160;-&gt;</var><text>set&#160;local&#160;variable:&#160;name=</text><var>'ships.repairers'</var><text>&#160;value=</text><var>null</var></line>
 <line indent=""><var>[THIS]&#160;-&gt;</var><text>set&#160;local&#160;variable:&#160;name=</text><var>'ships.repairers.m7d'</var><text>&#160;value=</text><var>null</var></line>
 <line indent=""><var>[THIS]&#160;-&gt;</var><text>remove&#160;secondary&#160;signal:&#160;signal=</text><var>SIGNAL_REPAIRED</var><text>,&#160;name=</text><var>'Repair.Signal'</var></line>
-<line interruptable="@" indent=""><var>=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>plugin.jj.lib.log.object</call><text>&#160;:&#160;</text><text>&#160;prepend=</text><var>'Wait&#160;for&#160;repair&#160;finished'</var><text>&#160;</text><text>&#160;logFile=</text><var>9898</var></line>
 <line indent=""><text>return&#160;</text><var>null</var></line>
 </sourcetext>
 <codearray>
@@ -162,7 +152,7 @@
     <sval type="string" val="target"/>
     <sval type="string" val="drones"/>
   </sval>
-  <sval type="array" size="55">
+  <sval type="array" size="51">
     <sval type="array" size="4">
       <sval type="int" val="761"/>
       <sval type="int" val="131075"/>
@@ -179,7 +169,7 @@
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610599927"/>
+      <sval type="int" val="-1610600695"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="10"/>
@@ -209,7 +199,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="50"/>
+      <sval type="int" val="47"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="107"/>
@@ -227,21 +217,9 @@
       <sval type="string" val="ships.repairers"/>
       <sval type="int" val="1"/>
     </sval>
-    <sval type="array" size="10">
-      <sval type="int" val="102"/>
-      <sval type="string" val="plugin.jj.lib.log.object"/>
-      <sval type="int" val="-2147483647"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="1"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="5"/>
-      <sval type="string" val="Waiting for repair loop."/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="9898"/>
-    </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610606589"/>
+      <sval type="int" val="-1610607101"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="1"/>
@@ -254,28 +232,9 @@
       <sval type="int" val="131074"/>
       <sval type="int" val="1"/>
     </sval>
-    <sval type="array" size="17">
-      <sval type="int" val="405"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="9898"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="10"/>
-      <sval type="int" val="5"/>
-      <sval type="string" val="ships.repairers: %s"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-    </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610607095"/>
+      <sval type="int" val="-1610607607"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="2"/>
@@ -298,7 +257,7 @@
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="3"/>
-      <sval type="int" val="-536866300"/>
+      <sval type="int" val="-536866812"/>
     </sval>
     <sval type="array" size="5">
       <sval type="int" val="136"/>
@@ -309,7 +268,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="12"/>
+      <sval type="int" val="10"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="525"/>
@@ -319,7 +278,7 @@
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-536865529"/>
+      <sval type="int" val="-536866041"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="4"/>
@@ -341,11 +300,11 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="12"/>
+      <sval type="int" val="10"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="131"/>
-      <sval type="int" val="-1610606584"/>
+      <sval type="int" val="-1610607096"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="1"/>
     </sval>
@@ -363,7 +322,7 @@
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-536863993"/>
+      <sval type="int" val="-536864505"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="5"/>
@@ -372,7 +331,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="50"/>
+      <sval type="int" val="47"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="131"/>
@@ -380,28 +339,9 @@
       <sval type="int" val="131074"/>
       <sval type="int" val="5"/>
     </sval>
-    <sval type="array" size="17">
-      <sval type="int" val="405"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="9898"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="10"/>
-      <sval type="int" val="5"/>
-      <sval type="string" val="ships.repairers.m7d: %s"/>
-      <sval type="int" val="131074"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-      <sval type="int" val="0"/>
-    </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-536862969"/>
+      <sval type="int" val="-536863737"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="2"/>
@@ -410,11 +350,11 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="50"/>
+      <sval type="int" val="47"/>
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610600183"/>
+      <sval type="int" val="-1610600951"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="2"/>
@@ -437,7 +377,7 @@
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="6"/>
-      <sval type="int" val="-536861436"/>
+      <sval type="int" val="-536862204"/>
     </sval>
     <sval type="array" size="5">
       <sval type="int" val="136"/>
@@ -448,7 +388,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="31"/>
+      <sval type="int" val="28"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="525"/>
@@ -458,7 +398,7 @@
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-536860412"/>
+      <sval type="int" val="-536861180"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="4"/>
@@ -480,7 +420,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="31"/>
+      <sval type="int" val="28"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="527"/>
@@ -490,7 +430,7 @@
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-536859388"/>
+      <sval type="int" val="-536860156"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="7"/>
@@ -512,7 +452,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="31"/>
+      <sval type="int" val="28"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="1841"/>
@@ -524,7 +464,7 @@
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="131"/>
-      <sval type="int" val="-536858617"/>
+      <sval type="int" val="-536859385"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="8"/>
     </sval>
@@ -537,7 +477,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="31"/>
+      <sval type="int" val="28"/>
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
@@ -570,18 +510,6 @@
       <sval type="int" val="5"/>
       <sval type="string" val="Repair.Signal"/>
     </sval>
-    <sval type="array" size="10">
-      <sval type="int" val="102"/>
-      <sval type="string" val="plugin.jj.lib.log.object"/>
-      <sval type="int" val="-2147483647"/>
-      <sval type="int" val="131075"/>
-      <sval type="int" val="1"/>
-      <sval type="int" val="2"/>
-      <sval type="int" val="5"/>
-      <sval type="string" val="Wait for repair finished"/>
-      <sval type="int" val="4"/>
-      <sval type="int" val="9898"/>
-    </sval>
     <sval type="array" size="3">
       <sval type="int" val="103"/>
       <sval type="int" val="0"/>
@@ -589,7 +517,7 @@
     </sval>
   </sval>
   <sval type="int" val="0"/>
-  <sval type="array" size="21">
+  <sval type="array" size="20">
     <sval type="array" size="3">
       <sval type="int" val="0"/>
       <sval type="int" val="1"/>
@@ -604,75 +532,71 @@
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="9"/>
-      <sval type="int" val="2"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="18"/>
+      <sval type="int" val="16"/>
       <sval type="int" val="6"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="18"/>
+      <sval type="int" val="16"/>
       <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="20"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="22"/>
+      <sval type="int" val="6"/>
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="22"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="24"/>
-      <sval type="int" val="6"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="24"/>
-      <sval type="int" val="4"/>
-    </sval>
-    <sval type="array" size="2">
-      <sval type="int" val="24"/>
+      <sval type="int" val="22"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="27"/>
+      <sval type="int" val="25"/>
       <sval type="int" val="7"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="31"/>
+      <sval type="int" val="28"/>
       <sval type="int" val="7"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="37"/>
+      <sval type="int" val="34"/>
       <sval type="int" val="6"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="37"/>
+      <sval type="int" val="34"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="41"/>
+      <sval type="int" val="38"/>
       <sval type="int" val="6"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="41"/>
+      <sval type="int" val="38"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="45"/>
+      <sval type="int" val="42"/>
       <sval type="int" val="6"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="45"/>
+      <sval type="int" val="42"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="49"/>
+      <sval type="int" val="46"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="50"/>
+      <sval type="int" val="47"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="50"/>
+      <sval type="int" val="47"/>
       <sval type="int" val="2"/>
     </sval>
   </sval>
@@ -680,5 +604,5 @@
 </sval>
 
 </codearray>
-<nosignature>3629</nosignature>
+<nosignature>3525</nosignature>
 </script>
