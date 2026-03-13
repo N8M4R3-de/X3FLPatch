@@ -575,6 +575,8 @@ Added new script commands
 1.3.20
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
+	Fixed M7D drones inability to repair huge stations in active sector
+	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector	Added docking lockup fix to improve ships/drones docking at carriers	
 	Fixed Face/Voice mismatch for speakers
 	Fixed creating some missions for Goners
 	Fixed player owned mercenary stations
