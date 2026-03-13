@@ -309,73 +309,111 @@ Added new script commands:
 
 Changelog:
 
-1.3.4:
+1.3.2:
+	Fixed disbanding of wings
+	Fixed jumps display in factory trade menu
+	Fixed Station Manager when home sector is blacklisted
+	Fixed applying upgrades from HQ loadouts
+	Fixed Merchants using incorrect wares
+	Fixed pack station command when moving freight via drones
+	Fixed returning wares when deploying a packed station
+	Fixed custom object context, "ishidden" arguments
+	Improved station manager handling of blacklisted sectors
+	Improved custom object context menu handling
+	Added Transfer Freight menu to player stations (Split from Adjust Station Parameters)
+	Added option to Disable SETA Safeties
+	Added hired TL option to pack your stations
+	Added script command: Split string by width
+	Added additional sections for custom object context menu items
+	Added Notification - Ship Attacked
+	Added Notification - Ship Killed
+	Added Notification - Station Attacked
+	Added Notification - Station Killed
+	Added setting to disable HQ Notifications
+	Added setting to disable factory colouring
+	Sector Music Control - Change the music track of claimed sectors
 
-Fixed move through gate command while docked
-Fixed disable hq queue message menu display
-Fixed missing "Select Agent" in script editor (Script Editor)
-Fixed XML Data handling for integers (Script Editor)
-Fixed HEPT showing up in Station section (Freight Exchange)
-Fixed text error in Flight School Tutorial
-Added patch_global file for adjustable patch settings
-Added number of marines per boarding pod to patch_global
-Added "Has Blueprint" to station/ship info
-Added Save game count statastic
-Added additional game tips
-Added Strip Ship option in HQ Docked ship control
-Added stripping of ship when recycling or reverse engineering
-Added saving/loading to Custom Start Dialog
-Added sector/galaxy hotkeys to Owned Ship list menu
-Added Auto setting for individual races in Global Blacklist
-Added Global option for disabling station colouring (Graphics Options)
-Added News count to Encyclopedia sidebar entry
-Added total ware cost for each ware in barter menu
-Added Property menu filter: Factories
-Added Property menu filter: Ships managed by homebase
-Added External factories/complexes in complex planner
-Improved extending of existing complexes (Build MK3)
-Allowed removing homebase in Trade Distrubution Run
+1.3.3:
+	Fixed freeze in Best Buy/Sells menu
+	Fixed ships with large ships docked from traveling through gates
+	Fixed Factory colour toggle
+	Fixed passenger status when ejecting/recollecting
+	Fixed space suits trying to go to enemy stations (ie Xenon Stations)
+	Removed debug from station manager
+	Removed price display for some wares (Quantum Processor/Focus Crystal)
+	Added Hotkey: Toggle Turbo Booster
+	Added notority bar to station encyclopedia page
+	Added Cargo bay full text in trade menu
+	Added Payment/Honour for releasing passengers at Goner Temple
+	Added Unfocussed Jumpdrive
+	New Ship Command - Upgrade factories (TL)
+
+1.3.4:
+	Fixed move through gate command while docked
+	Fixed disable hq queue message menu display
+	Fixed missing "Select Agent" in script editor (Script Editor)
+	Fixed XML Data handling for integers (Script Editor)
+	Fixed HEPT showing up in Station section (Freight Exchange)
+	Fixed text error in Flight School Tutorial
+	Added patch_global file for adjustable patch settings
+	Added number of marines per boarding pod to patch_global
+	Added "Has Blueprint" to station/ship info
+	Added Save game count statastic
+	Added additional game tips
+	Added Strip Ship option in HQ Docked ship control
+	Added stripping of ship when recycling or reverse engineering
+	Added saving/loading to Custom Start Dialog
+	Added sector/galaxy hotkeys to Owned Ship list menu
+	Added Auto setting for individual races in Global Blacklist
+	Added Global option for disabling station colouring (Graphics Options)
+	Added News count to Encyclopedia sidebar entry
+	Added total ware cost for each ware in barter menu
+	Added Property menu filter: Factories
+	Added Property menu filter: Ships managed by homebase
+	Added External factories/complexes in complex planner
+	Improved extending of existing complexes (Build MK3)
+	Allowed removing homebase in Trade Distrubution Run
 
 1.3.5:
-Added headquarters queue options to ship context menu while docked
-Added stations to recycleable list in HQ info menu
-Added Jumpdrive from gate/beacon context menu
-Added Collect ware from flying ware context menu
-Added Build station missions to corporations
-Added station defence missions available to Darkspace Corporation
-Added list of requirements on mission briefings
-Added pirate docks avaialble for sale at pirate shipyards
-Adjusted Discovery/Special Discvoery/Journal to show no price
-Improved enemy race selection for assassination missions
-Improved ship type selection for missions
-Fixed station manager attempting to get resources above HQ Maximum settings
-Fixed missing relay becon blueprint on Pirate Courior start
-Fixed owner check in auto mining script
-Fixed Mission Built Solar Powerplants primary/secondary resource
-Fixed wares with no price showing in Networth Menu
-Fixed Networth displaying deployable wares (Satellites, Lasertowers, etc)
-Fixed Sell at Station menu option for Best Sells menu
-Fixed Trade Reports showing weapon
-Fixed Trade report showing correct value when equipping multiple ships
-Fixed Terran TS ship selection for missions (Hayabusa, Mercator)
-Fixed assassination missions for Darkspace
-Fixed removing ships from repair queue
-Fixed HQ Repair from removing some ship settings
-Fixed HQ Loadouts for Resupply Fuel
-Fixed hq info display for stations
-Fixed taxi jobs from using invalid races for passengers
-Fixed destination stations for Corporation passenger transport missions
-Fixed Hired TL from not undocking after leaving your service
-Fixed move to coordinates command invalid input
-Fixed ejected suits idling after buying used ships
-Fixed clicking tabs in script editor menu
-Fixed Xtreme tour of a life time mission
-Fixed local trader range selection display
-
-Scripting/Modding
-Added new constants, RaceFlg.Inactive, MEvent.TradeFull, MEvent.TradeEmpty, PlotFlags
-Fixed command, destroy object: killer
-Added new script commands
+	Added headquarters queue options to ship context menu while docked
+	Added stations to recycleable list in HQ info menu
+	Added Jumpdrive from gate/beacon context menu
+	Added Collect ware from flying ware context menu
+	Added Build station missions to corporations
+	Added station defence missions available to Darkspace Corporation
+	Added list of requirements on mission briefings
+	Added pirate docks avaialble for sale at pirate shipyards
+	Adjusted Discovery/Special Discvoery/Journal to show no price
+	Improved enemy race selection for assassination missions
+	Improved ship type selection for missions
+	Fixed station manager attempting to get resources above HQ Maximum settings
+	Fixed missing relay becon blueprint on Pirate Courior start
+	Fixed owner check in auto mining script
+	Fixed Mission Built Solar Powerplants primary/secondary resource
+	Fixed wares with no price showing in Networth Menu
+	Fixed Networth displaying deployable wares (Satellites, Lasertowers, etc)
+	Fixed Sell at Station menu option for Best Sells menu
+	Fixed Trade Reports showing weapon
+	Fixed Trade report showing correct value when equipping multiple ships
+	Fixed Terran TS ship selection for missions (Hayabusa, Mercator)
+	Fixed assassination missions for Darkspace
+	Fixed removing ships from repair queue
+	Fixed HQ Repair from removing some ship settings
+	Fixed HQ Loadouts for Resupply Fuel
+	Fixed hq info display for stations
+	Fixed taxi jobs from using invalid races for passengers
+	Fixed destination stations for Corporation passenger transport missions
+	Fixed Hired TL from not undocking after leaving your service
+	Fixed move to coordinates command invalid input
+	Fixed ejected suits idling after buying used ships
+	Fixed clicking tabs in script editor menu
+	Fixed Xtreme tour of a life time mission
+	Fixed local trader range selection display
+	
+	Scripting/Modding
+	Added new constants, RaceFlg.Inactive, MEvent.TradeFull, MEvent.TradeEmpty, PlotFlags
+	Fixed command, destroy object: killer
+	Added new script commands
 
 
 1.3.6:
@@ -553,7 +591,7 @@ Added new script commands
 	Added face display to custom Comms	
 	Prevented station rebuild in sectors with ownership change
 
-1.3.19
+1.3.19:
 	Fixed Activate Turbo Booster Hotkey
 	Fixed displaying of pilots in my property (when scrolling)
 	Fixed default weapon masks for ships (Khaak)
@@ -572,7 +610,7 @@ Added new script commands
 	Added movie_finished event cue to MD
 	Added "reset" to alter_sector MD
 	
-1.3.20
+1.3.20:
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
 	Added some descriptions for Drone Carrier commands
