@@ -595,7 +595,7 @@ Added new script commands
       Drones won't collect wares undiscovered by player.
     Fixed and improved Drone Carrier command 'Resupply ships with drones'
 	Fixed M7D drones inability to repair huge stations in active sector
-	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector	Added docking lockup fix to improve ships/drones docking at carriers	
+	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector
 	Fixed Face/Voice mismatch for speakers
 	Fixed creating some missions for Goners
 	Fixed player owned mercenary stations
