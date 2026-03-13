@@ -1,7 +1,7 @@
 =============================================
 Script:		Unofficial Patch
 Created:	16/04/2023
-Version:	1.3.6
+Version:	1.3.20
 Author:		Cycrow
 Game:		X3: Farnham's Legacy 1.3
 =============================================
