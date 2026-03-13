@@ -594,6 +594,8 @@ Added new script commands
       Improved CPU efficiency.
       Drones won't collect wares undiscovered by player.
     Fixed and improved Drone Carrier command 'Resupply ships with drones'
+	Fixed M7D drones inability to repair huge stations in active sector
+	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector	Added docking lockup fix to improve ships/drones docking at carriers	
 	Fixed Face/Voice mismatch for speakers
 	Fixed creating some missions for Goners
 	Fixed player owned mercenary stations
@@ -603,7 +605,7 @@ Added new script commands
 	Added docking lockup fix to improve ships/drones docking at carriers	
 	Improved random music generator
 	Improved paranid reputation diplomacy during FL plot
-	Removed Build Command Software MK1 from Pirate Bases	
+	Removed Build Command Software from Docks where TLs are unable to dock
 	
 	Fixed getConnectedRace script command
 	Fixed getDialogRace script command
