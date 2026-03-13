@@ -416,6 +416,7 @@
 
 <page id="392008" title="Script Object Commands" descr="0" voice="no">
  <t id="9600">COMMAND_UPGRADE_FACTORY</t>
+ <t id="100013">COMMAND_DRONE_REPAIR_OBJECT</t>
 </page>
 
 <page id="392010" title="Script Cmd Names" descr="0" voice="no">
@@ -437,6 +438,7 @@
  <t id="100000">Ausrüstungsplan anwenden</t>
  <t id="100003">Beschädigte Schiffe in Schiffsw./HQ reparieren</t>
  <t id="100010">Waren mit Drohnen einsammeln</t>
+ <t id="100013">Objekt mit Drohnen reparieren</t>
  <t id="100028">Waren von Heimatbasis holen</t>
  <t id="100029">Waren an Heimatbasis liefern</t>
 </page>
@@ -526,7 +528,7 @@
  <t id="100009">D.Rep.Schiff</t>
  <t id="100010">D.Sammle.Waren</t>
  <t id="100012">Rep.Ziel</t>
- <t id="100013">D.Rep.Stat</t>
+ <t id="100013">D.Reparieren</t>
  <t id="100015">D.Bergbau</t>
  <t id="100016">Aufkl.Tor</t>
  <t id="100022">D.Sammle.Fliegen</t>
@@ -560,6 +562,16 @@
  <t id="1100">Dieser Befehl überweist automatisch Geldbeträge zwischen dem Stationskonto und deinem persönlichen Konto.\nWenn das Stationskonto unter den Mindestwert fällt, wird Geld von deinem Konto auf das Stationskonto überwiesen.\nWenn das Stationskonto den Höchstwert überschreitet, wird dieser vom Stationskonto auf dein persönliches Konto überwiesen.\n{2022,99994}</t>
  <t id="9600">Dieser Befehl weist deinem TL an, Fabriken die aufgerüstet werden können, automatisch auf zu rüsten. Dein TL wird die benötigten Stations-Upgradebausätze finden, diese kaufen und deine Stationen damit aufrüsten.\nDieser Befehl kann für eine einzelne Fabriken, Fabriken innerhalb von Komplexen, sowie für alle im Sektor befindlichen Fabriken bzw. Komplexe angewandt werden.\n{2022,99994}</t>
  <t id="100000">Schiff wird für einen Ausrüstungswechsel zu einem Hauptquartier geschickt. Das Schiff wird warten, bis alle erforderlichen Waren verfügbar sind.</t>
+ <t id="100005">Dieser Befehl weist deine Drohnen an, einen Sektor ausgehend von einen gewählten Punkt zu erkunden. Ausgehend von der Sektorgröße werden deine Drohnen dabei einen entsprechenden Suchbereich erkunden und nach Erledigung dieser Aufgabe wieder zum Träger zurückkehren.\n{2022,99994}</t>
+ <t id="100006">Dieser Befehl weist deine Drohnen an, alle bekannten Asteroiden im Sektor zu scannen. Werden während dieses Scanvorganges neue Asteroiden entdeckt, so werden diese von deinen Drohnen ebenfalls gescannt.\n{2022,99994}</t>
+ <t id="100007">Dieser Befehl weist deine Drohnen an, den Frachtraum von Schiffen im Sektor zu scannen. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
+ <t id="100008">Dieser Befehl weist deine Drohnen an, deine Schiffe im Sektor mit Nachschub zu versorgen. Dabei laden deine Drohnen Waren aus dem Frachtraum des Trägers, sofern diese verfügbar sind und in Anzahl der eingestellten Mengen der Nachschubeinstellungen der zu beliefernden schiffe und beliefern diese. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
+ <t id="100009">Dieser Befehl weist deine Drohnen an, eigene Schiffe im Sektor, die beschädigt sind, zu reparieren. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
+ <t id="100010">Dieser Befehl weist deine Drohnen an, Waren im Sektor zu einzusammeln und diese im Frachtraum des Trägers zu entladen. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
+ <t id="100013">Dieser Befehl weist deine Drohnen an, mittels ihrer Reparaturlaser ein Schiff oder eine Station zu reparieren.\n{2022,99994}</t>
+ <t id="100015">Dieser Befehl weist deine Drohnen an, Mineralien im Sektor abzubauen und diese im Frachtraum des Trägers zu entladen. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
+ <t id="100019">Dieser Befehl weist deine Drohnen an, Raketen abzufangen, die eigene und Schiffe befreundeter Fraktionen im Sektor angreifen. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}\n{2022,99994}</t>
+ <t id="100022">Dieser Befehl weist deine Drohnen an, Raumfliegen zu sammeln. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
  <t id="100031">Während dieser Befehl läuft, werden die Waren in deiner Station/deinem Komplex verwaltet. Alle heimatbasierten Schiffe werden benutzt, repariert und ersetzt, wenn nötig.\n\nDer Stationsmanager wird seinen Dienst solange fort führen, bis sein Befehl aus dem Kommandoslot der Station entfernt wird. Für die Dienste des Managers fällt eine Gebühr an, welche alle 2 Stunden vom Stationskonto abgebucht wird. Wenn sich nicht mehr genügend Credits auf dem Stationskonto vorhanden sind, werden die Dienste eingestellt, bis sie wieder bezahlt werden können.\n\nWährend der Manager Stationszugewiesene Schiffe verwendet, wird dessen Kontrolle übernommen, was dich daran hindert, diesen Schiffen Befehle zu erteilen.\n{2022,99994}</t>
 </page>
 
@@ -807,5 +819,7 @@
  <t id="1001">Um deinen Fortschritt speichern zu können, musst du entweder an einer Station angedockt sein oder eine Bergungsversicherung verwenden. Wenn du angedockt bist, kannst du speichern ohne eine Bergungsversicherung zu verwenden und wenn du die automatische Speicherung in Stationen aktiviert hast, wird dein Spiel jedes Mal beim Andocken, auf einem von drei zusätzlichen Speicherplätzen, automatisch abgespeichert. Beachte jedoch, dass die Speicherplätze für die automatische Speicherung jedes Mal in wiederholender Reihenfolge ersetzt werden, wenn du an einer Station andockst.\n\nWenn du es bevorzugst, jederzeit speichern zu können, auch wenn du im Weltraum unterwegs bist, dann benötigst du eine so genannte [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_TECH209']Bergungsversicherung[/hyperlink]. Für jede Speicherung wird 1 Versicherung benötigt, die beim Speichern in Anspruch genommen wird, du musst dir also einen Vorrat anlegen, wenn du viel speichern möchtest. Alternativ dazu kannst du auch einen [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_SALVAGECON']Bergungsversicherungsvertrag[/hyperlink] erwerben. Sobald du diesen besitzt, brauchst du keine Bergungsversicherung mehr, um zu speichern, sondern zahlst bei jedem Speichervorgang nur noch mit Credits, solange du auf deinen Konto zu dieser Zeit ausreichend zur Verfügung hast. Desweiteren kannst du auch eine [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_UNLIMIT_SALVAGE']Unbegrenzte Bergungsversicherung[/hyperlink] erwerben, mit der du überall und unbegrenzter Menge speichern kannst.</t>
  <t id="1002">Reparatur von Schiffen</t>
  <t id="1003">Der Weltraum kann ein gefährlicher Ort sein und manchmal kann es vorkommen, dass deine Schiffe beschädigt werden. Entweder durch Kollisionen oder durch feindliche Angriffe. Schilde sind nützlich, um Schäden an der Hülle zu vermeiden, deren Reparatur teuer oder zeitaufwändig sein kann. Also versuche die Schildenergie möglichst hochzuhalten, um den Schaden an deinem Schiff zu begrenzen. Wenn die Hülle deines Schiffes beschädigt wird, wirkt sich das auf die Geschwindigkeit aus, mit der du dich fortbewegen kannst. Je mehr Schaden die Hülle erleidet, desto langsamer wird dein Schiff. Wenn die Hülle deines Schiffes beschädigt wird, kann auch die Ausrüstung deines Schiffes zerstört werden, so dass du sie neu kaufen und installieren musst. Dies kannst du verhindern, indem du ein [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_CARGOSHIELD']Frachtraumkraftfeld[/hyperlink] installierst. Wenn die Hülle deines Schiffes beschädigt wird, gibt es zahlreiche Möglichkeiten, sie zu reparieren und die Hülle wieder auf 100% zu bringen. Dies kann jedoch kostspielig und/oder zeitaufwändig werden.\n\nBei kleinen Schiffen ist die einfachste Art der Reparatur, sich in den Raumanzug zu begeben, der mit einem Reparaturlaser ausgestattet ist. Gehe einfach nahe genug an dein Schiff heran und schieße mit dem Reparaturlaser darauf, um mit der Reparatur zu beginnen. Je stärker die Hülle ist, desto länger dauert dies und ist im Allgemeinen für größere Schiffe nicht geeignet. Achte nur auf den begrenzten Sauerstoffvorrat in deinem Raumanzug, damit dir nicht die Luft ausgeht.\n\nEine schnellere Methode ist die Reparatur von Schiffen in einer Werft, wobei sich die Reparaturkosten im Verhältnis zum Schiffspreis bewegen und sehr hoch sein können. Mit dieser Methode wird dein Schiff sofort repariert und ist direkt wieder einsatzbereit.\n\nWenn du Zugang zu deinem persönlichen Hauptquartier hast, kannst du es auch dort reparieren lassen. Docke das Schiff einfach an deinem Hauptquartier an und füge es zur Reparaturwarteschlange hinzu \(du kannst das Schiff, auf dem du dich gerade befindest, nicht reparieren). Dies erfordert Ressourcen und einige Credits, um die Reparatur abzuschließen, also stelle sicher, dass dein Hauptquartier über ausreichend Ressourcen verfügt und genügend Credits auf seinem Konto hat. Diese Methode geht schneller als mit einem Reparaturlaser und ist billiger als in einer Schiffswerft, erfordert jedoch Ressourcen und dauert eine gewisse Zeit.\n\nLetztendlich gibt es noch die Möglichkeit, einen Drohnenträger \(M7D\) mit Spezialdrohnen auszustatten, die mit einem Reparaturlasern ausgerüstet sind und dein Schiff ähnlich wie dein Raumanzug reparieren können. Da du mehrere Drohnen einsetzen kannst, kannst du die Reparaturgeschwindigkeit erhöhen. Boronische Drohnen sind besonders leistungsstark bei Reparaturen.</t>
+ <t id="1010">Schiff mit Drohnen reparieren</t>
+ <t id="1011">Station mit Drohnen reparieren</t>
 </page>
 </language>

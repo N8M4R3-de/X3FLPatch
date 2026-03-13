@@ -575,6 +575,25 @@ Added new script commands
 1.3.20
 	Fixed Return Wares mission
 	Fixed hyperlink highlighting correct position due to word wrap
+	Added some descriptions for Drone Carrier commands
+	Drone Carrier repair targets interrupt current task to stop in space until repaired (non-player owned ships only).
+	Drones of killed NPC Drone Carriers will now do [COMMAND_DESTROY_THIS] to avoid clogging universe.
+	Drone Carrier command 'Repair station with drones'
+	  Improved selection of ship/station and wording of command text
+	  Nearest ship/station selector filters out undamaged objects.
+	  Nearest ship filters out drones already in space.
+	Fixed Drone Carrier automatic self repair getting stuck in a loop of docking and undocking
+	Drone Carrier 'Scan asteroids with drones' command
+	  Fixed bugging out where drones wouldn't undock.
+	  Drones will scan asteroids discovered after flying to already known asteroids.
+	  Drone carrier will scan asteroids in range with its own mineral scanner if available
+	Fixed conversion error in 'Map sector with drones' command causing small scan area.
+    Drone Carrier command 'Scan ships with drones' now abandons chase if target ship has docked or escaped more than a sector away.
+    Drone Carrier command 'Collect wares with drones'
+      Prepared to be usable by AI owned M7Ds
+      Improved CPU efficiency.
+      Drones won't collect wares undiscovered by player.
+    Fixed and improved Drone Carrier command 'Resupply ships with drones'
 	Fixed M7D drones inability to repair huge stations in active sector
 	Fixed M7D drones of NPC races being unable to repair objects of same race in active sector	Added docking lockup fix to improve ships/drones docking at carriers	
 	Fixed Face/Voice mismatch for speakers

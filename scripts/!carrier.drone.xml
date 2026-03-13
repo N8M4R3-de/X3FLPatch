@@ -1,0 +1,1343 @@
+<?xml version="1.0" standalone="yes" ?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl" ?>
+<script>
+<name>!carrier.drone</name>
+<version>4</version>
+<engineversion>73</engineversion>
+<description>Drone Carrier run script</description>
+<arguments>
+</arguments>
+<sourceplaintext>
+<![CDATA[
+  $null = null
+  
+  $dropWares = table alloc
+  $dropMarines = table alloc
+  $last.repair = playing time
+  
+  while [TRUE]
+@   = wait 5000 ms
+    
+  * check if theres a new script version, and restart it
+    if is a new script version available
+      $task = get task ID
+      $scriptName = get script name
+@     START $null -> call script !lib.restart.task :  Object=[THIS]  Script=$scriptName  Task=$task  Argument 1=null  Argument 2=null  Argument 3=null  Argument 4=null  Argument 5=null
+      break
+    end
+    
+    skip if [THIS] -> is of class M7D
+      return null
+    
+    if not [THIS] -> is script !ship.cmd.drone.supply on stack of task=0
+  * check any drones to empty their wares
+      $drone = get next key: table=$dropWares key=null
+      while $drone
+        $env = $drone -> get environment
+        if $env == [THIS]
+@         = $drone -> call script !lib.dronecarrier.switchweapon :  Weapon=null
+          
+          $tWares = $drone ->get wares table: include equipped=[FALSE]
+          if $tWares
+            $ware = get next key: table=$tWares key=null
+            while $ware
+              $amt = $tWares[$ware]
+              = $drone -> unload $amt units of $ware
+              $ware = get next key: table=$tWares key=$ware
+            end
+          end
+          
+        end
+        $drone = get next key: table=$dropWares key=$drone
+      end
+    end
+    
+    $drone = get next key: table=$dropMarines key=null
+    while $drone
+      $env = $drone -> get environment
+      if $env == [THIS]
+        $aMarines = $drone -> get marines array
+        if $aMarines
+          $i = size of array $aMarines
+          while $i
+            dec $i = 
+            $marine = $aMarines[$i]
+            if [THIS] -> free space for marines
+              = $marine -> move passenger to ship [THIS]: set passenger as pilot=[FALSE]
+            end
+          end
+        end
+      end
+      $drone = get next key: table=$dropMarines key=$drone
+    end
+    clear table $dropWares
+    clear table $dropMarines
+    
+  * check we have any ships to do the actual supply
+    $time = playing time
+    $should.repair = [FALSE]
+    do if ( $last.repair + 180 ) > $time
+      $should.repair = [TRUE]
+    
+    do if $should.repair
+      $last.repair = $time
+    
+    $aDrones = [THIS] ->get managed ships: role=Drone
+    $i = size of array $aDrones
+    while $i
+      dec $i = 
+      $drone = $aDrones[$i]
+      $env = $drone -> get environment
+      if $env == [THIS]
+        if $should.repair
+          $hull = $drone -> get hull percent
+          if $hull < 100
+            $max.hull = $drone -> get max hull
+            $amt = fixed multiply and divide: $max.hull * 2 / 100
+            do if $amt < 2
+              $amt = 2
+            $hull = $drone -> get hull
+            $hull = $hull + $amt
+            $drone ->set hull to $hull
+          end
+        end
+        
+        $dropWares[$drone] = $drone
+        $aMarines = $drone -> get marines array
+        if $aMarines
+          do if size of array $aMarines
+            $dropMarines[$drone] = $drone
+        end
+      end
+    end
+    
+  * Drones should automatically repair the carrier if idle
+    gosub sub.Repair.Self
+  end
+  return null
+  
+  * ===========================================
+  *  SUB: Repair carrier with own drones if not busy
+  * ===========================================
+  sub.Repair.Self:
+  $cmd = [THIS] -> get command
+  do if $cmd == COMMAND_CARRIER_RECALL
+    endsub
+  $hull = [THIS] -> get hull percent
+  do if $hull > 60
+    endsub
+  $dronesBusy = [FALSE]
+  $i = size of array $aDrones
+  while $i
+    dec $i = 
+    $drone = $aDrones[$i]
+@   if [THIS] -> call script !lib.carrier.isshipbusy :  Ship=$drone  Allow Recall=[FALSE]
+      $dronesBusy = [TRUE]
+      break
+    end
+  end
+  if $dronesBusy == [FALSE]
+    if [THIS] -> is task 0 in use
+      [THIS] ->interrupt with script !ship.cmd.repairobject.drones and prio 100: arg1=[THIS] arg2=null arg3=null arg4=null
+    else if not get task ID
+@     = [THIS] -> call script !ship.cmd.repairobject.drones :  =[THIS]  ???=null
+    else
+@     START [THIS] -> call script !ship.cmd.repairobject.drones :  =[THIS]  ???=null
+    end
+  end
+  endsub
+  
+  return null
+]]>
+</sourceplaintext>
+<sourcetext>
+<line indent=""><var>$null&#160;=&#160;</var><var>null</var></line>
+<line indent=""></line>
+<line indent=""><var>$dropWares&#160;=&#160;</var><text>table&#160;alloc</text></line>
+<line indent=""><var>$dropMarines&#160;=&#160;</var><text>table&#160;alloc</text></line>
+<line indent=""><var>$last.repair&#160;=&#160;</var><text>playing&#160;time</text></line>
+<line indent=""></line>
+<line indent=""><var>while&#160;</var><var>[TRUE]</var></line>
+<line interruptable="@" indent="&#160;"><var>=&#160;</var><text>wait&#160;</text><var>5000</var><text>&#160;ms</text></line>
+<line indent="&#160;"></line>
+<line indent=""><comment><text>*&#160;</text><var>check&#160;if&#160;theres&#160;a&#160;new&#160;script&#160;version,&#160;and&#160;restart&#160;it</var></comment></line>
+<line indent="&#160;"><var>if&#160;</var><text>is&#160;a&#160;new&#160;script&#160;version&#160;available</text></line>
+<line indent="&#160;&#160;"><var>$task&#160;=&#160;</var><text>get&#160;task&#160;ID</text></line>
+<line indent="&#160;&#160;"><var>$scriptName&#160;=&#160;</var><text>get&#160;script&#160;name</text></line>
+<line interruptable="@" indent="&#160;&#160;"><var>START&#160;</var><var>$null&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!lib.restart.task</call><text>&#160;:&#160;</text><text>&#160;Object=</text><var>[THIS]</var><text>&#160;</text><text>&#160;Script=</text><var>$scriptName</var><text>&#160;</text><text>&#160;Task=</text><var>$task</var><text>&#160;</text><text>&#160;Argument&#160;1=</text><var>null</var><text>&#160;</text><text>&#160;Argument&#160;2=</text><var>null</var><text>&#160;</text><text>&#160;Argument&#160;3=</text><var>null</var><text>&#160;</text><text>&#160;Argument&#160;4=</text><var>null</var><text>&#160;</text><text>&#160;Argument&#160;5=</text><var>null</var></line>
+<line indent="&#160;&#160;"><text>break</text></line>
+<line indent="&#160;"><text>end</text></line>
+<line indent="&#160;"></line>
+<line indent="&#160;"><var>skip&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;of&#160;class&#160;</text><var>M7D</var></line>
+<line indent="&#160;&#160;"><text>return&#160;</text><var>null</var></line>
+<line indent="&#160;"></line>
+<line indent="&#160;"><var>if&#160;not&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;script&#160;</text><call>!ship.cmd.drone.supply</call><text>&#160;on&#160;stack&#160;of&#160;task=</text><var>0</var></line>
+<line indent=""><comment><text>*&#160;</text><var>check&#160;any&#160;drones&#160;to&#160;empty&#160;their&#160;wares</var></comment></line>
+<line indent="&#160;&#160;"><var>$drone&#160;=&#160;</var><text>get&#160;next&#160;key:&#160;table=</text><var>$dropWares</var><text>&#160;key=</text><var>null</var></line>
+<line indent="&#160;&#160;"><var>while&#160;</var><var>$drone</var></line>
+<line indent="&#160;&#160;&#160;"><var>$env&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;environment</text></line>
+<line indent="&#160;&#160;&#160;"><var>if&#160;</var><var>$env</var><text>&#160;</text><var>==</var><text>&#160;</text><var>[THIS]</var></line>
+<line interruptable="@" indent="&#160;&#160;&#160;&#160;"><var>=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!lib.dronecarrier.switchweapon</call><text>&#160;:&#160;</text><text>&#160;Weapon=</text><var>null</var></line>
+<line indent="&#160;&#160;&#160;&#160;"></line>
+<line indent="&#160;&#160;&#160;&#160;"><var>$tWares&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>get&#160;wares&#160;table:&#160;include&#160;equipped=</text><var>[FALSE]</var></line>
+<line indent="&#160;&#160;&#160;&#160;"><var>if&#160;</var><var>$tWares</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$ware&#160;=&#160;</var><text>get&#160;next&#160;key:&#160;table=</text><var>$tWares</var><text>&#160;key=</text><var>null</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>while&#160;</var><var>$ware</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;&#160;"><var>$amt&#160;=&#160;</var><var>$tWares</var><text>[</text><var>$ware</var><text>]</text></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;&#160;"><var>=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;unload&#160;</text><var>$amt</var><text>&#160;units&#160;of&#160;</text><var>$ware</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;&#160;"><var>$ware&#160;=&#160;</var><text>get&#160;next&#160;key:&#160;table=</text><var>$tWares</var><text>&#160;key=</text><var>$ware</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;&#160;&#160;"></line>
+<line indent="&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;&#160;"><var>$drone&#160;=&#160;</var><text>get&#160;next&#160;key:&#160;table=</text><var>$dropWares</var><text>&#160;key=</text><var>$drone</var></line>
+<line indent="&#160;&#160;"><text>end</text></line>
+<line indent="&#160;"><text>end</text></line>
+<line indent="&#160;"></line>
+<line indent="&#160;"><var>$drone&#160;=&#160;</var><text>get&#160;next&#160;key:&#160;table=</text><var>$dropMarines</var><text>&#160;key=</text><var>null</var></line>
+<line indent="&#160;"><var>while&#160;</var><var>$drone</var></line>
+<line indent="&#160;&#160;"><var>$env&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;environment</text></line>
+<line indent="&#160;&#160;"><var>if&#160;</var><var>$env</var><text>&#160;</text><var>==</var><text>&#160;</text><var>[THIS]</var></line>
+<line indent="&#160;&#160;&#160;"><var>$aMarines&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;marines&#160;array</text></line>
+<line indent="&#160;&#160;&#160;"><var>if&#160;</var><var>$aMarines</var></line>
+<line indent="&#160;&#160;&#160;&#160;"><var>$i&#160;=&#160;</var><text>size&#160;of&#160;array&#160;</text><var>$aMarines</var></line>
+<line indent="&#160;&#160;&#160;&#160;"><var>while&#160;</var><var>$i</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><text>dec&#160;</text><var>$i&#160;=&#160;</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$marine&#160;=&#160;</var><var>$aMarines</var><text>[</text><var>$i</var><text>]</text></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;free&#160;space&#160;for&#160;marines</text></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;&#160;"><var>=&#160;</var><var>$marine&#160;-&gt;</var><text>&#160;move&#160;passenger&#160;to&#160;ship&#160;</text><var>[THIS]</var><text>:&#160;set&#160;passenger&#160;as&#160;pilot=</text><var>[FALSE]</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;"><var>$drone&#160;=&#160;</var><text>get&#160;next&#160;key:&#160;table=</text><var>$dropMarines</var><text>&#160;key=</text><var>$drone</var></line>
+<line indent="&#160;"><text>end</text></line>
+<line indent="&#160;"><text>clear&#160;table&#160;</text><var>$dropWares</var></line>
+<line indent="&#160;"><text>clear&#160;table&#160;</text><var>$dropMarines</var></line>
+<line indent="&#160;"></line>
+<line indent=""><comment><text>*&#160;</text><var>check&#160;we&#160;have&#160;any&#160;ships&#160;to&#160;do&#160;the&#160;actual&#160;supply</var></comment></line>
+<line indent="&#160;"><var>$time&#160;=&#160;</var><text>playing&#160;time</text></line>
+<line indent="&#160;"><var>$should.repair&#160;=&#160;</var><var>[FALSE]</var></line>
+<line indent="&#160;"><var>do&#160;if&#160;</var><var>(</var><text>&#160;</text><var>$last.repair</var><text>&#160;</text><var>+</var><text>&#160;</text><var>180</var><text>&#160;</text><var>)</var><text>&#160;</text><var>&gt;</var><text>&#160;</text><var>$time</var></line>
+<line indent="&#160;&#160;"><var>$should.repair&#160;=&#160;</var><var>[TRUE]</var></line>
+<line indent="&#160;"></line>
+<line indent="&#160;"><var>do&#160;if&#160;</var><var>$should.repair</var></line>
+<line indent="&#160;&#160;"><var>$last.repair&#160;=&#160;</var><var>$time</var></line>
+<line indent="&#160;"></line>
+<line indent="&#160;"><var>$aDrones&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;managed&#160;ships:&#160;role=</text><var>Drone</var></line>
+<line indent="&#160;"><var>$i&#160;=&#160;</var><text>size&#160;of&#160;array&#160;</text><var>$aDrones</var></line>
+<line indent="&#160;"><var>while&#160;</var><var>$i</var></line>
+<line indent="&#160;&#160;"><text>dec&#160;</text><var>$i&#160;=&#160;</var></line>
+<line indent="&#160;&#160;"><var>$drone&#160;=&#160;</var><var>$aDrones</var><text>[</text><var>$i</var><text>]</text></line>
+<line indent="&#160;&#160;"><var>$env&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;environment</text></line>
+<line indent="&#160;&#160;"><var>if&#160;</var><var>$env</var><text>&#160;</text><var>==</var><text>&#160;</text><var>[THIS]</var></line>
+<line indent="&#160;&#160;&#160;"><var>if&#160;</var><var>$should.repair</var></line>
+<line indent="&#160;&#160;&#160;&#160;"><var>$hull&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;hull&#160;percent</text></line>
+<line indent="&#160;&#160;&#160;&#160;"><var>if&#160;</var><var>$hull</var><text>&#160;</text><var>&lt;</var><text>&#160;</text><var>100</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$max.hull&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;max&#160;hull</text></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$amt&#160;=&#160;</var><text>fixed&#160;multiply&#160;and&#160;divide:&#160;</text><var>$max.hull</var><text>&#160;*&#160;</text><var>2</var><text>&#160;/&#160;</text><var>100</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>do&#160;if&#160;</var><var>$amt</var><text>&#160;</text><var>&lt;</var><text>&#160;</text><var>2</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;&#160;"><var>$amt&#160;=&#160;</var><var>2</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$hull&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;hull</text></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$hull&#160;=&#160;</var><var>$hull</var><text>&#160;</text><var>+</var><text>&#160;</text><var>$amt</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$drone&#160;-&gt;</var><text>set&#160;hull&#160;to&#160;</text><var>$hull</var></line>
+<line indent="&#160;&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;&#160;"></line>
+<line indent="&#160;&#160;&#160;"><var>$dropWares</var><text>[</text><var>$drone</var><text>]&#160;=&#160;</text><var>$drone</var></line>
+<line indent="&#160;&#160;&#160;"><var>$aMarines&#160;=&#160;</var><var>$drone&#160;-&gt;</var><text>&#160;get&#160;marines&#160;array</text></line>
+<line indent="&#160;&#160;&#160;"><var>if&#160;</var><var>$aMarines</var></line>
+<line indent="&#160;&#160;&#160;&#160;"><var>do&#160;if&#160;</var><text>size&#160;of&#160;array&#160;</text><var>$aMarines</var></line>
+<line indent="&#160;&#160;&#160;&#160;&#160;"><var>$dropMarines</var><text>[</text><var>$drone</var><text>]&#160;=&#160;</text><var>$drone</var></line>
+<line indent="&#160;&#160;&#160;"><text>end</text></line>
+<line indent="&#160;&#160;"><text>end</text></line>
+<line indent="&#160;"><text>end</text></line>
+<line indent="&#160;"></line>
+<line indent=""><comment><text>*&#160;</text><var>Drones&#160;should&#160;automatically&#160;repair&#160;the&#160;carrier&#160;if&#160;idle</var></comment></line>
+<line indent="&#160;"><text>gosub&#160;</text><var>sub.Repair.Self</var></line>
+<line indent=""><text>end</text></line>
+<line indent=""><text>return&#160;</text><var>null</var></line>
+<line indent=""></line>
+<line indent=""><comment><text>*&#160;</text><var>===========================================</var></comment></line>
+<line indent=""><comment><text>*&#160;</text><var>&#160;SUB:&#160;Repair&#160;carrier&#160;with&#160;own&#160;drones&#160;if&#160;not&#160;busy</var></comment></line>
+<line indent=""><comment><text>*&#160;</text><var>===========================================</var></comment></line>
+<line indent=""><var>sub.Repair.Self</var><text>:</text></line>
+<line indent=""><var>$cmd&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;command</text></line>
+<line indent=""><var>do&#160;if&#160;</var><var>$cmd</var><text>&#160;</text><var>==</var><text>&#160;</text><var>COMMAND_CARRIER_RECALL</var></line>
+<line indent="&#160;"><text>endsub</text></line>
+<line indent=""><var>$hull&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;hull&#160;percent</text></line>
+<line indent=""><var>do&#160;if&#160;</var><var>$hull</var><text>&#160;</text><var>&gt;</var><text>&#160;</text><var>60</var></line>
+<line indent="&#160;"><text>endsub</text></line>
+<line indent=""><var>$dronesBusy&#160;=&#160;</var><var>[FALSE]</var></line>
+<line indent=""><var>$i&#160;=&#160;</var><text>size&#160;of&#160;array&#160;</text><var>$aDrones</var></line>
+<line indent=""><var>while&#160;</var><var>$i</var></line>
+<line indent="&#160;"><text>dec&#160;</text><var>$i&#160;=&#160;</var></line>
+<line indent="&#160;"><var>$drone&#160;=&#160;</var><var>$aDrones</var><text>[</text><var>$i</var><text>]</text></line>
+<line interruptable="@" indent="&#160;"><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!lib.carrier.isshipbusy</call><text>&#160;:&#160;</text><text>&#160;Ship=</text><var>$drone</var><text>&#160;</text><text>&#160;Allow&#160;Recall=</text><var>[FALSE]</var></line>
+<line indent="&#160;&#160;"><var>$dronesBusy&#160;=&#160;</var><var>[TRUE]</var></line>
+<line indent="&#160;&#160;"><text>break</text></line>
+<line indent="&#160;"><text>end</text></line>
+<line indent=""><text>end</text></line>
+<line indent=""><var>if&#160;</var><var>$dronesBusy</var><text>&#160;</text><var>==</var><text>&#160;</text><var>[FALSE]</var></line>
+<line indent="&#160;"><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;task&#160;</text><var>0</var><text>&#160;in&#160;use</text></line>
+<line indent="&#160;&#160;"><var>[THIS]&#160;-&gt;</var><text>interrupt&#160;with&#160;script&#160;</text><call>!ship.cmd.repairobject.drones</call><text>&#160;and&#160;prio&#160;</text><var>100</var><text>:&#160;arg1=</text><var>[THIS]</var><text>&#160;arg2=</text><var>null</var><text>&#160;arg3=</text><var>null</var><text>&#160;arg4=</text><var>null</var></line>
+<line indent="&#160;"><var>else&#160;if&#160;not&#160;</var><text>get&#160;task&#160;ID</text></line>
+<line interruptable="@" indent="&#160;&#160;"><var>=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!ship.cmd.repairobject.drones</call><text>&#160;:&#160;</text><text>&#160;=</text><var>[THIS]</var><text>&#160;</text><text>&#160;???=</text><var>null</var></line>
+<line indent="&#160;"><text>else</text></line>
+<line interruptable="@" indent="&#160;&#160;"><var>START&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!ship.cmd.repairobject.drones</call><text>&#160;:&#160;</text><text>&#160;=</text><var>[THIS]</var><text>&#160;</text><text>&#160;???=</text><var>null</var></line>
+<line indent="&#160;"><text>end</text></line>
+<line indent=""><text>end</text></line>
+<line indent=""><text>endsub</text></line>
+<line indent=""></line>
+<line indent=""><text>return&#160;</text><var>null</var></line>
+</sourcetext>
+<codearray>
+
+<sval type="array" size="10">
+  <sval type="string" val="!carrier.drone"/>
+  <sval type="int" val="73"/>
+  <sval type="string" val="Drone Carrier run script"/>
+  <sval type="int" val="4"/>
+  <sval type="int" val="0"/>
+  <sval type="array" size="21">
+    <sval type="string" val="null"/>
+    <sval type="string" val="dropWares"/>
+    <sval type="string" val="dropMarines"/>
+    <sval type="string" val="last.repair"/>
+    <sval type="string" val="task"/>
+    <sval type="string" val="scriptName"/>
+    <sval type="string" val="drone"/>
+    <sval type="string" val="env"/>
+    <sval type="string" val="tWares"/>
+    <sval type="string" val="ware"/>
+    <sval type="string" val="amt"/>
+    <sval type="string" val="aMarines"/>
+    <sval type="string" val="i"/>
+    <sval type="string" val="marine"/>
+    <sval type="string" val="time"/>
+    <sval type="string" val="should.repair"/>
+    <sval type="string" val="aDrones"/>
+    <sval type="string" val="hull"/>
+    <sval type="string" val="max.hull"/>
+    <sval type="string" val="cmd"/>
+    <sval type="string" val="dronesBusy"/>
+  </sval>
+  <sval type="array" size="104">
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1733"/>
+      <sval type="int" val="1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1733"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="141"/>
+      <sval type="int" val="3"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610593015"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="105"/>
+      <sval type="int" val="-2147483647"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="5000"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1201"/>
+      <sval type="int" val="-1610609917"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="147"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1032"/>
+      <sval type="int" val="5"/>
+    </sval>
+    <sval type="array" size="22">
+      <sval type="int" val="102"/>
+      <sval type="string" val="!lib.restart.task"/>
+      <sval type="int" val="-2147483646"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="77"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="705"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-536867577"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="2152"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="1072"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-536863484"/>
+      <sval type="string" val="!ship.cmd.drone.supply"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1739"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610605303"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="702"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="7"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610605821"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="8">
+      <sval type="int" val="102"/>
+      <sval type="string" val="!lib.dronecarrier.switchweapon"/>
+      <sval type="int" val="-2147483647"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1867"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="9"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610605821"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1739"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610605815"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="129"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="9"/>
+    </sval>
+    <sval type="array" size="8">
+      <sval type="int" val="640"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="-2147483647"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="9"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1739"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="8"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="9"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="22"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1739"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="15"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1739"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610601463"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="702"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="7"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610601981"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="1433"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="11"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610601981"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="131"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610601975"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="143"/>
+      <sval type="int" val="12"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="129"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="12"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="1434"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1610602237"/>
+    </sval>
+    <sval type="array" size="8">
+      <sval type="int" val="1233"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="13"/>
+      <sval type="int" val="-2147483647"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="9"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="36"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1739"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="30"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="1737"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="1737"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="141"/>
+      <sval type="int" val="14"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="21">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610599928"/>
+      <sval type="int" val="5"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="180"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-2"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="-4"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610599416"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="14"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1841"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="33"/>
+      <sval type="string" val="drone"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="131"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="16"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610593527"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="143"/>
+      <sval type="int" val="12"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="129"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="12"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="702"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="7"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610593789"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610595069"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="900"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="17"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610595069"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="100"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="786"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="18"/>
+    </sval>
+    <sval type="array" size="8">
+      <sval type="int" val="1918"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="18"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="100"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610595832"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="787"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="17"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="5">
+      <sval type="int" val="1047"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="130"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="1433"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="11"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610593789"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="131"/>
+      <sval type="int" val="-1610593784"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="11"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="130"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="54"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="1167"/>
+      <sval type="int" val="78"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="101"/>
+      <sval type="string" val="sub.Repair.Self"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="525"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="19"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610591736"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="19"/>
+      <sval type="int" val="18"/>
+      <sval type="int" val="100002"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="1">
+      <sval type="int" val="1168"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="900"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="17"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610590968"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="17"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="60"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="1">
+      <sval type="int" val="1168"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="20"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="4">
+      <sval type="int" val="131"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="16"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610588663"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="143"/>
+      <sval type="int" val="12"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="129"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="16"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="12"/>
+    </sval>
+    <sval type="array" size="10">
+      <sval type="int" val="102"/>
+      <sval type="string" val="!lib.carrier.isshipbusy"/>
+      <sval type="int" val="-1610588925"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="6"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="9"/>
+    </sval>
+    <sval type="array" size="7">
+      <sval type="int" val="104"/>
+      <sval type="int" val="20"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="94"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="87"/>
+    </sval>
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610586621"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="20"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="9"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="-2"/>
+    </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="1073"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="-1610587645"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="14">
+      <sval type="int" val="159"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="!ship.cmd.repairobject.drones"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="100"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="102"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="147"/>
+      <sval type="int" val="-536845050"/>
+    </sval>
+    <sval type="array" size="10">
+      <sval type="int" val="102"/>
+      <sval type="string" val="!ship.cmd.repairobject.drones"/>
+      <sval type="int" val="-2147483647"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="112"/>
+      <sval type="int" val="102"/>
+    </sval>
+    <sval type="array" size="10">
+      <sval type="int" val="102"/>
+      <sval type="string" val="!ship.cmd.repairobject.drones"/>
+      <sval type="int" val="-2147483646"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+    <sval type="array" size="1">
+      <sval type="int" val="1168"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="103"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="0"/>
+    </sval>
+  </sval>
+  <sval type="int" val="0"/>
+  <sval type="array" size="46">
+    <sval type="array" size="2">
+      <sval type="int" val="1"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="4"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="6"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="6"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="check if theres a new script version, and restart it"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="11"/>
+      <sval type="int" val="7"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="11"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="11"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="13"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="14"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="check any drones to empty their wares"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="19"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="27"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="27"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="27"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="27"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="29"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="29"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="29"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="41"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="42"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="42"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="42"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="44"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="46"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="46"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="check we have any ships to do the actual supply"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="50"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="52"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="69"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="69"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="69"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="74"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="74"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="75"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="75"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="75"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="Drones should automatically repair the carrier if idle"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="77"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="78"/>
+      <sval type="int" val="2"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="78"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="==========================================="/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="78"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val=" SUB: Repair carrier with own drones if not busy"/>
+    </sval>
+    <sval type="array" size="3">
+      <sval type="int" val="78"/>
+      <sval type="int" val="1"/>
+      <sval type="string" val="==========================================="/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="93"/>
+      <sval type="int" val="7"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="93"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="94"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="101"/>
+      <sval type="int" val="5"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="102"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="102"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="103"/>
+      <sval type="int" val="2"/>
+    </sval>
+  </sval>
+  <sval type="int" val="0"/>
+</sval>
+
+</codearray>
+<nosignature>5223</nosignature>
+</script>

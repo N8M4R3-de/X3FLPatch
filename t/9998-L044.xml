@@ -142,20 +142,34 @@
 
 <page id="392008" title="Script Object Commands" descr="0" voice="no">
  <t id="9600">COMMAND_UPGRADE_FACTORY</t>
+ <t id="100013">COMMAND_DRONE_REPAIR_OBJECT</t>
 </page>
 
 <page id="392010" title="Script Cmd Names" descr="0" voice="no">
  <t id="9600">Upgrade factories</t>
+ <t id="100006">Scan asteroids with drones</t>
+ <t id="100013">Repair object with drones</t>
  <t id="100009">Repair all ships with drones</t>
- <t id="100013">Repair ship/station with drones</t>
 </page>
 
 <page id="392011" title="Script Cmd Shorts" descr="0" voice="no">
  <t id="9600">Upgrade.Fac</t>
+ <t id="100012">T.Repair</t>
+ <t id="100013">D.Repair</t>
 </page>
 
 <page id="392022" title="Command Info" descr="0" voice="no">
  <t id="9600">This command will allow your TL to automatically upgrade factories that are ready to upgrade.  The TL will find and buy the needed upgrade kits as well as applying them\nThis can work on individual factories, factories within a complex and a whole sector of factories/complexes.\n{2022,99994}</t>
+ <t id="100005">This command orders your drones to explore a sector starting from a point in space selected by you. They will use the size of the sector to calculate a suitable search area. When they have covered their entire search area they will return to the carrier.\n{2022,99994}</t>
+ <t id="100006">This command orders your drones to scan any asteroids in the sector already discovered by you. If new asteroids are discovered en-route, drones will be dispatched to scan these also.\n{2022,99994}</t>
+ <t id="100007">This command orders your drones to scan the freight bay of ships in the sector. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100008">This command orders your drones to resupply your ships in the sector. Drones will load wares from the carrier's cargo bay if available and transport them to ships with insufficient wares as specified by their supply settings. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100009">This command orders your drones to repair damaged ships in the sector belonging to you. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100010">This command orders your drones to collect wares in the sector. They will deposit the wares in the carrier's freight bay. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100013">This command will send your drones to repair a ship or station using their repair lasers.\n{2022,99994}</t>
+ <t id="100015">This command will send your drones to mine minerals in the sector. Once a drone has filled its cargo bay it will deliver the minerals to the carrier and resume mining. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100019">This command will order your drones to shoot down missiles targeting friendly ships in the sector. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
+ <t id="100022">This command will send your drones to collect spaceflies. The command will run indefinitely until you order your carrier to do something different.\n{2022,99994}</t>
 </page>
 
 <page id="393303" title="L2 Generic Transport Passenger" descr="0" voice="no">
@@ -335,6 +349,8 @@
  <t id="1001">To save your progress, you either need to be docked at a station, or use salvage insurance.  When you are docked, you can save without cost, and if you have autosave enabled, you will save every time you dock using 1 of the 3 auto save slots.  Be aware that the auto save slots will get replaced in sequence each time you dock at a station.\n\nIf you prefer to save anytime, like when you are flying in space, then you need what is known as [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_TECH209']Salvage Insurance[/hyperlink].  Each save requires 1 insurance to be used and is consumed when you save, so you will have to keep stocked up if you wish to save a lot.  You can also get hold of the [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_SALVAGECON']Salvage Insurance Contract[/hyperlink] instead, once you have this, you no longer need Salvage Insurance to save, instead you will just pay credits each time you save as long as you have enough available at the time.  Finally, you can get [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_UNLIMIT_SALVAGE']Unlimited Salvage Insurance[/hyperlink] upgrade, which gives you unlimited free saving anywhere.</t>
  <t id="1002">Repairing Ships</t>
  <t id="1003">Space can be a hazardous place, and sometimes your ships will become damaged, either from collisions or by hostile attacks.  Hull damage reduces your ship’s maximum speed, the greater the damage the greater the reduction.  Additionally, whenever your ship’s hull takes damage, your equipment can be destroyed, requiring you to buy and reinstall it again.  You can prevent equipment loss by installing [hyperlink value='OpenEncyclopedia;Ware;SS_WARE_CARGOSHIELD']Cargo Bay Shielding[/hyperlink].\n\nShields are critical for avoiding hull damage, so keep your shields up and consider disengaging from fights when your shield runs low.  Purchasing additional shielding further reduces the likelihood of hull damage.\n\nThere are numerous methods to repair your damaged ships back up to 100%, each with its own pros and cons.  These tend to be costly or time-consuming or a compromise between the two.\n\n[green]\(1\)[/green] For small ships, the easiest repair method is to eject into your spacesuit which comes preinstalled with a [hyperlink value='OpenEncyclopedia;Ware;SS_LASER_REPAIR']Repair Laser[/hyperlink].  Simply get close enough to your ship and fire the repair beam. The larger the hull, the longer this will take, and is generally impractical for bigger ships.  Be cautious of your limited oxygen supply – you don’t want to run out of air while outside your ship.\n\n[green]\(2\)[/green] A faster method is to repair your ships at any shipyard. However, this can be expensive, with the cost being proportional to the cost of the ship itself.  But this method will instantly repair your ship and return it to service immediately.\n\n[green]\(3\)[/green] Once you gain access to your personal headquarters you can use it for repairs as well. Just dock the ship at your headquarters and add it to the repair queue \(you cannot repair the ship you are currently piloting\).  This requires resources and some credits to complete the repair, so make sure your headquarters is supplied and has enough credits in its account.  This method is quicker than a repair laser and cheaper than a shipyard.\n\n[green]\(4\)[/green] Finally, if you obtain a Drone Carrier \(M7D\) ship you can equip it with special drones fitted with repair lasers similar to that in your spacesuit. The more drones you deploy, the faster the repairs - far quicker than a spacesuit alone. Boron drones are especially effective at repairs.</t>
+ <t id="1010">Repair ship with drones</t>
+ <t id="1011">Repair station with drones</t>
 </page>
 
 <page id="392003" title="Script Command Names" descr="0" voice="no">
