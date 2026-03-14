@@ -12,7 +12,6 @@ catpck -a ../L/x3galedit.obj ../06.cat::addon2/L/
 catpck -a ../L/x3intro.obj ../06.cat::addon2/L/
 catpck -a ../L/x3story.obj ../06.cat::addon2/L/
 catpck -a ../t/0001* ../06.cat::addon2/t/
-catpck -a ../t/0002* ../06.cat::addon2/t/
 catpck -a ../t/9998* ../06.cat::addon2/t/
 catpck -a --recursive ../CAT/* ../06.cat
 spktool -createscript patch.sps

@@ -201,6 +201,7 @@ Readme: GAME X3FL $GAMEDIR/PluginManager/Readme/Unofficial Patch/readme-patch.tx
 Mod: GAME X3FL $GAMEDIR/06.cat
 Mod: GAME X3FL $GAMEDIR/06.dat
 Text: GAME X3FL $GAMEDIR/t/9998-L*.xml
+TextPCK: GAME X3FL $GAMEDIR/t/0002-L*.xml
 
 AutoSave: $SAVEDIR/SPK/$AUTOSAVE
 ExportZip: X3FL $SAVEDIR/ZIP/$AUTOSAVE
