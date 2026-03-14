@@ -86,7 +86,7 @@ ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.packstation.dropped.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.player.saferoute.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.repair.target.is.stationary.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.repair.target.is.stoppable.xml
-ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.ship.get.trader.signal.attacked.xml
+ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.ship.set.trader.signal.attacked.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.ship.plotpath.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!lib.ship.plotroute.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!move.buildcomplex.xml
@@ -142,7 +142,7 @@ ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.trade.dist.std.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.trade.fetch.menu.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.attacked.ts.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.attacked.xml
-ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.signal.created.tp.tm.trader.xml
+ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.created.tp.tm.trader.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.dronecmdnone.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.followerneedshelp.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.killed.dronerepairer.xml
