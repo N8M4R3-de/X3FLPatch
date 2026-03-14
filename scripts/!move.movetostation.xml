@@ -2,8 +2,8 @@
 <?xml-stylesheet href="x2script.xsl" type="text/xsl" ?>
 <script>
 <name>!move.movetostation</name>
-<version>4</version>
-<engineversion>73</engineversion>
+<version>5</version>
+<engineversion>74</engineversion>
 <description>Move a ship into a station or carrier</description>
 <arguments>
 <argument index="1" name="targetstation" type="Var/Station/Carrier" desc="station" />
@@ -62,9 +62,11 @@
 @     = [THIS] -> call script !ship.signal.docking :  Carrier=$targetstation  Docking?=[TRUE]
     
   * Start docking lockup fix in parallel to main docking task
-    if not [THIS] -> is script !move.movetostation.check on stack of task=$taskLockupFix
-      $taskLockupFix = [THIS] -> get next available task: starting=[Task.StartFree]
-      [THIS] ->start task $taskLockupFix with script !move.movetostation.check and prio 100: arg1=$targetstation arg2=null arg3=null arg4=null arg5=null
+    if is datatype[ $taskLockupFix ] == DATATYPE_INT
+      if not [THIS] -> is script !move.movetostation.check on stack of task=$taskLockupFix
+        $taskLockupFix = [THIS] -> get next available task: starting=[Task.StartFree]
+        [THIS] ->start task $taskLockupFix with script !move.movetostation.check and prio 100: arg1=$targetstation arg2=null arg3=null arg4=null arg5=null
+      end
     end
     
     if [THIS] -> get amount of ware Docking Computer in cargo bay
@@ -154,9 +156,11 @@
 <line interruptable="@" indent="&#160;&#160;"><var>=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;call&#160;script&#160;</text><call>!ship.signal.docking</call><text>&#160;:&#160;</text><text>&#160;Carrier=</text><var>$targetstation</var><text>&#160;</text><text>&#160;Docking?=</text><var>[TRUE]</var></line>
 <line indent="&#160;"></line>
 <line indent=""><comment><text>*&#160;</text><var>Start&#160;docking&#160;lockup&#160;fix&#160;in&#160;parallel&#160;to&#160;main&#160;docking&#160;task</var></comment></line>
-<line indent="&#160;"><var>if&#160;not&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;script&#160;</text><call>!move.movetostation.check</call><text>&#160;on&#160;stack&#160;of&#160;task=</text><var>$taskLockupFix</var></line>
-<line indent="&#160;&#160;"><var>$taskLockupFix&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;next&#160;available&#160;task:&#160;starting=</text><var>[Task.StartFree]</var></line>
-<line indent="&#160;&#160;"><var>[THIS]&#160;-&gt;</var><text>start&#160;task&#160;</text><var>$taskLockupFix</var><text>&#160;with&#160;script&#160;</text><call>!move.movetostation.check</call><text>&#160;and&#160;prio&#160;</text><var>100</var><text>:&#160;arg1=</text><var>$targetstation</var><text>&#160;arg2=</text><var>null</var><text>&#160;arg3=</text><var>null</var><text>&#160;arg4=</text><var>null</var><text>&#160;arg5=</text><var>null</var></line>
+<line indent="&#160;"><var>if&#160;</var><text>is&#160;datatype[&#160;</text><var>$taskLockupFix</var><text>&#160;]&#160;==&#160;</text><var>DATATYPE_INT</var></line>
+<line indent="&#160;&#160;"><var>if&#160;not&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;is&#160;script&#160;</text><call>!move.movetostation.check</call><text>&#160;on&#160;stack&#160;of&#160;task=</text><var>$taskLockupFix</var></line>
+<line indent="&#160;&#160;&#160;"><var>$taskLockupFix&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;next&#160;available&#160;task:&#160;starting=</text><var>[Task.StartFree]</var></line>
+<line indent="&#160;&#160;&#160;"><var>[THIS]&#160;-&gt;</var><text>start&#160;task&#160;</text><var>$taskLockupFix</var><text>&#160;with&#160;script&#160;</text><call>!move.movetostation.check</call><text>&#160;and&#160;prio&#160;</text><var>100</var><text>:&#160;arg1=</text><var>$targetstation</var><text>&#160;arg2=</text><var>null</var><text>&#160;arg3=</text><var>null</var><text>&#160;arg4=</text><var>null</var><text>&#160;arg5=</text><var>null</var></line>
+<line indent="&#160;&#160;"><text>end</text></line>
 <line indent="&#160;"><text>end</text></line>
 <line indent="&#160;"></line>
 <line indent="&#160;"><var>if&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;amount&#160;of&#160;ware&#160;</text><var>Docking&#160;Computer</var><text>&#160;in&#160;cargo&#160;bay</text></line>
@@ -196,9 +200,9 @@
 
 <sval type="array" size="10">
   <sval type="string" val="!move.movetostation"/>
-  <sval type="int" val="73"/>
+  <sval type="int" val="74"/>
   <sval type="string" val="Move a ship into a station or carrier"/>
-  <sval type="int" val="4"/>
+  <sval type="int" val="5"/>
   <sval type="int" val="0"/>
   <sval type="array" size="5">
     <sval type="string" val="targetstation"/>
@@ -207,7 +211,7 @@
     <sval type="string" val="sec"/>
     <sval type="string" val="carrier"/>
   </sval>
-  <sval type="array" size="60">
+  <sval type="array" size="61">
     <sval type="array" size="4">
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
@@ -306,7 +310,7 @@
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610599415"/>
+      <sval type="int" val="-1610599159"/>
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
@@ -325,7 +329,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="52"/>
+      <sval type="int" val="53"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="733"/>
@@ -337,7 +341,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="1167"/>
-      <sval type="int" val="54"/>
+      <sval type="int" val="55"/>
     </sval>
     <sval type="array" size="4">
       <sval type="int" val="703"/>
@@ -452,7 +456,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="112"/>
-      <sval type="int" val="52"/>
+      <sval type="int" val="53"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="705"/>
@@ -474,11 +478,19 @@
       <sval type="int" val="131075"/>
       <sval type="int" val="10"/>
     </sval>
+    <sval type="array" size="6">
+      <sval type="int" val="125"/>
+      <sval type="int" val="-1610602237"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="2"/>
+      <sval type="int" val="20"/>
+      <sval type="int" val="4"/>
+    </sval>
     <sval type="array" size="7">
       <sval type="int" val="1072"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-536860668"/>
+      <sval type="int" val="-536860412"/>
       <sval type="string" val="!move.movetostation.check"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="2"/>
@@ -515,7 +527,7 @@
       <sval type="int" val="618"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-1610601213"/>
+      <sval type="int" val="-1610600957"/>
       <sval type="int" val="9"/>
       <sval type="int" val="1048595"/>
     </sval>
@@ -523,7 +535,7 @@
       <sval type="int" val="705"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610601213"/>
+      <sval type="int" val="-1610600957"/>
       <sval type="int" val="12"/>
       <sval type="int" val="2004"/>
     </sval>
@@ -535,7 +547,7 @@
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610601208"/>
+      <sval type="int" val="-1610600952"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="4"/>
@@ -560,7 +572,7 @@
     </sval>
     <sval type="array" size="13">
       <sval type="int" val="104"/>
-      <sval type="int" val="-536858873"/>
+      <sval type="int" val="-536858617"/>
       <sval type="int" val="3"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="11"/>
@@ -585,13 +597,13 @@
       <sval type="int" val="706"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610599933"/>
+      <sval type="int" val="-1610599677"/>
     </sval>
     <sval type="array" size="6">
       <sval type="int" val="705"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="0"/>
-      <sval type="int" val="-1610599928"/>
+      <sval type="int" val="-1610599672"/>
       <sval type="int" val="12"/>
       <sval type="int" val="2033"/>
     </sval>
@@ -621,7 +633,7 @@
     </sval>
     <sval type="array" size="2">
       <sval type="int" val="1167"/>
-      <sval type="int" val="54"/>
+      <sval type="int" val="55"/>
     </sval>
     <sval type="array" size="3">
       <sval type="int" val="103"/>
@@ -634,7 +646,7 @@
     </sval>
     <sval type="array" size="7">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610597885"/>
+      <sval type="int" val="-1610597629"/>
       <sval type="int" val="1"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="2"/>
@@ -645,7 +657,7 @@
       <sval type="int" val="2107"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-1610597880"/>
+      <sval type="int" val="-1610597624"/>
       <sval type="int" val="5"/>
       <sval type="string" val="!move.movetostation.check"/>
       <sval type="int" val="131074"/>
@@ -686,7 +698,7 @@
       <sval type="string" val="station"/>
     </sval>
   </sval>
-  <sval type="array" size="36">
+  <sval type="array" size="37">
     <sval type="array" size="2">
       <sval type="int" val="9"/>
       <sval type="int" val="4"/>
@@ -774,67 +786,71 @@
       <sval type="string" val="Start docking lockup fix in parallel to main docking task"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="40"/>
+      <sval type="int" val="41"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="40"/>
+      <sval type="int" val="41"/>
+      <sval type="int" val="4"/>
+    </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="41"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="45"/>
+      <sval type="int" val="46"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="45"/>
+      <sval type="int" val="46"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="45"/>
+      <sval type="int" val="46"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="47"/>
+      <sval type="int" val="48"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="3">
-      <sval type="int" val="47"/>
+      <sval type="int" val="48"/>
       <sval type="int" val="1"/>
       <sval type="string" val="remove ship from array"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="50"/>
+      <sval type="int" val="51"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="52"/>
+      <sval type="int" val="53"/>
       <sval type="int" val="4"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="52"/>
+      <sval type="int" val="53"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="54"/>
+      <sval type="int" val="55"/>
       <sval type="int" val="2"/>
     </sval>
     <sval type="array" size="3">
-      <sval type="int" val="54"/>
+      <sval type="int" val="55"/>
       <sval type="int" val="1"/>
       <sval type="string" val="================="/>
     </sval>
     <sval type="array" size="3">
-      <sval type="int" val="54"/>
+      <sval type="int" val="55"/>
       <sval type="int" val="1"/>
       <sval type="string" val="End tasks"/>
     </sval>
     <sval type="array" size="3">
-      <sval type="int" val="54"/>
+      <sval type="int" val="55"/>
       <sval type="int" val="1"/>
       <sval type="string" val="================="/>
     </sval>
     <sval type="array" size="2">
-      <sval type="int" val="58"/>
+      <sval type="int" val="59"/>
       <sval type="int" val="4"/>
     </sval>
   </sval>
@@ -842,5 +858,5 @@
 </sval>
 
 </codearray>
-<nosignature>4891</nosignature>
+<nosignature>4014</nosignature>
 </script>
