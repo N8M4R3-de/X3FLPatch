@@ -153,11 +153,7 @@ Script: GAME X3FL $GAMEDIR/Scripts/lib.xml.*
 Readme: GAME X3FL $GAMEDIR/PluginManager/Readme/Unofficial Patch/readme-patch.txt
 Mod: GAME X3FL $GAMEDIR/06.cat
 Mod: GAME X3FL $GAMEDIR/06.dat
-TextPCK: GAME X3FL $GAMEDIR/t/0002-L044.xml
-Text: GAME X3FL $GAMEDIR/t/0002-L049.pck
-Text: GAME X3FL $GAMEDIR/t/0002-L007.pck
 Text: GAME X3FL $GAMEDIR/t/9998-L*.xml
-Text: GAME X3FL $GAMEDIR/t/9998-L*.pck
 
 AutoSave: $SAVEDIR/SPK/$AUTOSAVE
 ExportZip: X3FL $SAVEDIR/ZIP/$AUTOSAVE
