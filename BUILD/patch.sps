@@ -59,6 +59,7 @@ ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!init.ship.commandpreload.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!init.ship.commandupgrade.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!init.ship.globalscriptmap.pl.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!init.ship.globalscriptmap.std.xml
+ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!init.wing.commandpreload.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!job.collect.marines.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!job.dukes.boarding.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!job.trade.freetrader.xml
@@ -120,7 +121,7 @@ ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.basic.menu.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.collectware.drones.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.collectware.pl.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.collectware.std.xml
-ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.drone.scanasteroid.std.xml
+ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.drone.scanasteriod.std.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.drone.scanships.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.drone.supply.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.freighttransfer.menu.xml
@@ -140,6 +141,7 @@ ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.trade.dist.std.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.cmd.trade.fetch.menu.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.attacked.ts.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.attacked.xml
+ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.dronecmdnone.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.followerneedshelp.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.killed.dronerepairer.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/!ship.signal.killed.m7d.xml
@@ -180,6 +182,7 @@ ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.shipbrowser.data.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.st.ex.local.menu.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.st.ex.local.report.menu.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.st.ex.run.xml
+ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.st.ex.station.run.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.stationmgr.move.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.stationmgr.finddest.xml
 ScriptPCK: GAME X3FL $GAMEDIR/Scripts/plugin.stationmgr.flee.xml
