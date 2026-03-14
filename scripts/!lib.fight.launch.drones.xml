@@ -12,8 +12,10 @@
 </arguments>
 <sourceplaintext>
 <![CDATA[
-  skip if [THIS] ->get should drop drones
-    return null
+  if [OWNER] == Player
+    skip if [THIS] ->get should drop drones
+      return null
+  end
   $drone.time = [THIS] -> get local variable: name='drop.drones'
   $time = playing time
   do if $drone.time AND $time <= ( $drone.time + 180 )
@@ -26,8 +28,10 @@
 ]]>
 </sourceplaintext>
 <sourcetext>
-<line indent=""><var>skip&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;should&#160;drop&#160;drones</text></line>
-<line indent="&#160;"><text>return&#160;</text><var>null</var></line>
+<line indent=""><var>if&#160;</var><var>[OWNER]</var><text>&#160;</text><var>==</var><text>&#160;</text><var>Player</var></line>
+<line indent="&#160;"><var>skip&#160;if&#160;</var><var>[THIS]&#160;-&gt;</var><text>get&#160;should&#160;drop&#160;drones</text></line>
+<line indent="&#160;&#160;"><text>return&#160;</text><var>null</var></line>
+<line indent=""><text>end</text></line>
 <line indent=""><var>$drone.time&#160;=&#160;</var><var>[THIS]&#160;-&gt;</var><text>&#160;get&#160;local&#160;variable:&#160;name=</text><var>'drop.drones'</var></line>
 <line indent=""><var>$time&#160;=&#160;</var><text>playing&#160;time</text></line>
 <line indent=""><var>do&#160;if&#160;</var><var>$drone.time</var><text>&#160;</text><var>AND</var><text>&#160;</text><var>$time</var><text>&#160;</text><var>&lt;=</var><text>&#160;</text><var>(</var><text>&#160;</text><var>$drone.time</var><text>&#160;</text><var>+</var><text>&#160;</text><var>180</var><text>&#160;</text><var>)</var></line>
@@ -54,12 +58,27 @@
     <sval type="string" val="time"/>
     <sval type="string" val="rnd"/>
   </sval>
-  <sval type="array" size="11">
+  <sval type="array" size="12">
+    <sval type="array" size="13">
+      <sval type="int" val="104"/>
+      <sval type="int" val="-1610611965"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="131075"/>
+      <sval type="int" val="7"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="10"/>
+      <sval type="int" val="15"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="3"/>
+      <sval type="int" val="-1"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="-2"/>
+    </sval>
     <sval type="array" size="4">
       <sval type="int" val="2692"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-536870393"/>
+      <sval type="int" val="-536870137"/>
     </sval>
     <sval type="array" size="3">
       <sval type="int" val="103"/>
@@ -80,7 +99,7 @@
     </sval>
     <sval type="array" size="27">
       <sval type="int" val="104"/>
-      <sval type="int" val="-1610611192"/>
+      <sval type="int" val="-1610610936"/>
       <sval type="int" val="7"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="3"/>
@@ -133,7 +152,7 @@
       <sval type="int" val="546"/>
       <sval type="int" val="131075"/>
       <sval type="int" val="1"/>
-      <sval type="int" val="-1610610168"/>
+      <sval type="int" val="-1610609912"/>
       <sval type="int" val="131074"/>
       <sval type="int" val="5"/>
       <sval type="int" val="131074"/>
@@ -168,10 +187,15 @@
       <sval type="string" val=""/>
     </sval>
   </sval>
-  <sval type="int" val="0"/>
+  <sval type="array" size="1">
+    <sval type="array" size="2">
+      <sval type="int" val="3"/>
+      <sval type="int" val="4"/>
+    </sval>
+  </sval>
   <sval type="int" val="0"/>
 </sval>
 
 </codearray>
-<nosignature>2524</nosignature>
+<nosignature>9567</nosignature>
 </script>

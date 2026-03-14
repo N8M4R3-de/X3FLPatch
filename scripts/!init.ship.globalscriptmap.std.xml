@@ -222,6 +222,9 @@
   
   global script map: set: key=SIGNAL_DOCKED, class=Ship, race=$race, script=!ship.signal.docked.std, prio=10
   global secondary signal map: add signal=SIGNAL_CHANGESECTOR race=null class=Lasertower script=!ship.signal.lasertower.setup prio=100 name='lasertower.setup'
+  
+  global secondary signal map: add signal=SIGNAL_CREATED race=$race class=TM script=!ship.signal.created.tp.tm.trader prio=50 name='tm.trader.set.attacked.signal'
+  global secondary signal map: add signal=SIGNAL_CREATED race=$race class=TP script=!ship.signal.created.tp.tm.trader prio=50 name='tp.trader.set.attacked.signal'
   return null
 ]]>
 </sourceplaintext>
@@ -439,6 +442,9 @@
 <line indent=""></line>
 <line indent=""><text>global&#160;script&#160;map:&#160;set:&#160;key=</text><var>SIGNAL_DOCKED</var><text>,&#160;class=</text><var>Ship</var><text>,&#160;race=</text><var>$race</var><text>,&#160;script=</text><call>!ship.signal.docked.std</call><text>,&#160;prio=</text><var>10</var></line>
 <line indent=""><text>global&#160;secondary&#160;signal&#160;map:&#160;add&#160;signal=</text><var>SIGNAL_CHANGESECTOR</var><text>&#160;race=</text><var>null</var><text>&#160;class=</text><var>Lasertower</var><text>&#160;script=</text><call>!ship.signal.lasertower.setup</call><text>&#160;prio=</text><var>100</var><text>&#160;name=</text><var>'lasertower.setup'</var></line>
+<line indent=""></line>
+<line indent=""><text>global&#160;secondary&#160;signal&#160;map:&#160;add&#160;signal=</text><var>SIGNAL_CREATED</var><text>&#160;race=</text><var>$race</var><text>&#160;class=</text><var>TM</var><text>&#160;script=</text><call>!ship.signal.created.tp.tm.trader</call><text>&#160;prio=</text><var>50</var><text>&#160;name=</text><var>'tm.trader.set.attacked.signal'</var></line>
+<line indent=""><text>global&#160;secondary&#160;signal&#160;map:&#160;add&#160;signal=</text><var>SIGNAL_CREATED</var><text>&#160;race=</text><var>$race</var><text>&#160;class=</text><var>TP</var><text>&#160;script=</text><call>!ship.signal.created.tp.tm.trader</call><text>&#160;prio=</text><var>50</var><text>&#160;name=</text><var>'tp.trader.set.attacked.signal'</var></line>
 <line indent=""><text>return&#160;</text><var>null</var></line>
 </sourcetext>
 <codearray>
@@ -454,7 +460,7 @@
     <sval type="string" val="races"/>
     <sval type="string" val="i"/>
   </sval>
-  <sval type="array" size="166">
+  <sval type="array" size="168">
     <sval type="array" size="7">
       <sval type="int" val="104"/>
       <sval type="int" val="0"/>
@@ -2377,6 +2383,34 @@
       <sval type="int" val="5"/>
       <sval type="string" val="lasertower.setup"/>
     </sval>
+    <sval type="array" size="12">
+      <sval type="int" val="1407"/>
+      <sval type="int" val="18"/>
+      <sval type="int" val="1030"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="2141"/>
+      <sval type="string" val="!ship.signal.created.tp.tm.trader"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="50"/>
+      <sval type="int" val="5"/>
+      <sval type="string" val="tm.trader.set.attacked.signal"/>
+    </sval>
+    <sval type="array" size="12">
+      <sval type="int" val="1407"/>
+      <sval type="int" val="18"/>
+      <sval type="int" val="1030"/>
+      <sval type="int" val="131074"/>
+      <sval type="int" val="0"/>
+      <sval type="int" val="12"/>
+      <sval type="int" val="2030"/>
+      <sval type="string" val="!ship.signal.created.tp.tm.trader"/>
+      <sval type="int" val="4"/>
+      <sval type="int" val="50"/>
+      <sval type="int" val="5"/>
+      <sval type="string" val="tp.trader.set.attacked.signal"/>
+    </sval>
     <sval type="array" size="3">
       <sval type="int" val="103"/>
       <sval type="int" val="0"/>
@@ -2384,7 +2418,7 @@
     </sval>
   </sval>
   <sval type="int" val="0"/>
-  <sval type="array" size="51">
+  <sval type="array" size="52">
     <sval type="array" size="3">
       <sval type="int" val="0"/>
       <sval type="int" val="1"/>
@@ -2608,10 +2642,14 @@
       <sval type="int" val="163"/>
       <sval type="int" val="2"/>
     </sval>
+    <sval type="array" size="2">
+      <sval type="int" val="165"/>
+      <sval type="int" val="2"/>
+    </sval>
   </sval>
   <sval type="int" val="0"/>
 </sval>
 
 </codearray>
-<nosignature>6138</nosignature>
+<nosignature>6822</nosignature>
 </script>
