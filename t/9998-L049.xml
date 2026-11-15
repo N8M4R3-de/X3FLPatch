@@ -34,6 +34,9 @@
  <t id="4653">Numerische Schild/Rumpf-Anzeige</t>
  <t id="4657">Unfokussierter Sprung</t>
  <t id="4658">Verlasse unf. Sprungsektor</t>
+ <t id="4670">Sind Sie sicher, dass Sie Spielstand #%d \033B\laden\033X wollen?(#%d is automatically replaced with correct number!)</t>
+ <t id="4671">Sind Sie sicher, dass Sie den Autosave-Spielstand #%d \033B\laden\033X wollen?</t>
+ <t id="4672">Sind Sie sicher, dass Sie Spielstand #%d \033R\überschreiben\033X wollen?</t>
  <t id="4697">Auf Sektorkarte Anzeigen</t>
  <t id="4741">Börsenzugangsvoraussetzungen</t>
  <t id="4770">Fabrikfarbgebung deaktivieren</t>
@@ -63,7 +66,7 @@
  <t id="1104785">Station zerstört</t>
  <t id="1104786">Ausrüstung entfernen</t>
  <t id="1104787">\t</t>
- <t id="1104788">Anzahl Nachrichten</t>
+ <t id="1104788">Anzahl Neuigkeiten</t>
  <t id="1104789">Verberge von der Heimatbasis gesteuerte Schiffe</t>
  <t id="1104790">Anforderungen</t>
  <t id="1104791">Freier Laderaum</t>
@@ -408,7 +411,13 @@
  <t id="3302">%0set station rebuild in owner sector only: %1</t>
  <t id="3303">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, script=%5</t>
  <t id="3304">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, scriptname=%5</t> 
-</page>
+ <t id="3305">add black market ware: %0, chance=%1</t>
+ <t id="3306">%0force destruct: show no explosion=%1</t>
+ <t id="3307">%1%0get actors</t>
+ <t id="3308">%0remove actor: %1</t>
+ <t id="3309">%1%0does actor have mission</t>
+ <t id="3310">%1%0does actor have objectives</t>
+ </page>
 
 <page id="392005" title="Script Command Menu" descr="0" voice="no">
  <t id="103">Datenreihen &amp; Tabellen</t>
@@ -437,6 +446,8 @@
  <t id="9600">Fabriken Aufrüsten</t>
  <t id="100000">Ausrüstungsplan anwenden</t>
  <t id="100003">Beschädigte Schiffe in Schiffsw./HQ reparieren</t>
+ <t id="100006">Asteroiden mit Drohnen scannen</t> 
+ <t id="100009">Schiffe im Sektor mit Drohnen reparieren</t>
  <t id="100010">Waren mit Drohnen einsammeln</t>
  <t id="100013">Objekt mit Drohnen reparieren</t>
  <t id="100028">Waren von Heimatbasis holen</t>
@@ -506,7 +517,7 @@
  <t id="91">Spr.zu.mir</t>
  <t id="92">FL.Nachschub</t>
  <t id="93">FL.Patr.Sektorn</t>
- <t id="94">Packe.Stat</t>
+ <t id="94">Packe.Station</t>
  <t id="100">K.Angr.Feinde</t>
  <t id="101">K.Angr.m.Ziel</t>
  <t id="102">K.RakAbw</t>
@@ -525,7 +536,7 @@
  <t id="100006">D.Scan.Asteroid</t>
  <t id="100007">D.Scan.Schiffe</t>
  <t id="100008">D.Nachschub</t>
- <t id="100009">D.Rep.Schiff</t>
+ <t id="100009">D.Rep.Schiffe</t>
  <t id="100010">D.Sammle.Waren</t>
  <t id="100012">Rep.Ziel</t>
  <t id="100013">D.Reparieren</t>
@@ -568,7 +579,7 @@
  <t id="100008">Dieser Befehl weist deine Drohnen an, deine Schiffe im Sektor mit Nachschub zu versorgen. Dabei laden deine Drohnen Waren aus dem Frachtraum des Trägers, sofern diese verfügbar sind und in Anzahl der eingestellten Mengen der Nachschubeinstellungen der zu beliefernden schiffe und beliefern diese. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
  <t id="100009">Dieser Befehl weist deine Drohnen an, eigene Schiffe im Sektor, die beschädigt sind, zu reparieren. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
  <t id="100010">Dieser Befehl weist deine Drohnen an, Waren im Sektor zu einzusammeln und diese im Frachtraum des Trägers zu entladen. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
- <t id="100013">Dieser Befehl weist deine Drohnen an, mittels ihrer Reparaturlaser ein Schiff oder eine Station zu reparieren.\n{2022,99994}</t>
+ <t id="100013">Dieser Befehl weist deine Drohnen an, mittels ihrer Reparaturlaser ein ausgewähltes Schiff oder eine ausgewählte Station zu reparieren.\n{2022,99994}</t>
  <t id="100015">Dieser Befehl weist deine Drohnen an, Mineralien im Sektor abzubauen und diese im Frachtraum des Trägers zu entladen. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
  <t id="100019">Dieser Befehl weist deine Drohnen an, Raketen abzufangen, die eigene und Schiffe befreundeter Fraktionen im Sektor angreifen. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}\n{2022,99994}</t>
  <t id="100022">Dieser Befehl weist deine Drohnen an, Raumfliegen zu sammeln. Dieser Befehl wird solange ausgeführt, bis du deinem Träger einen neuen Befehl gibst.\n{2022,99994}</t>
