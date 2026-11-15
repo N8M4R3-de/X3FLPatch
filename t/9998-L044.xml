@@ -517,7 +517,13 @@
  <t id="3302">%0set station rebuild in owner sector only: %1</t>
  <t id="3303">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, script=%5</t>
  <t id="3304">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, scriptname=%5</t> 
-</page>
+ <t id="3305">add black market ware: %0, chance=%1</t>
+ <t id="3306">%0force destruct: show no explosion=%1</t>
+ <t id="3307">%1%0get actors</t>
+ <t id="3308">%0remove actor: %1</t>
+ <t id="3309">%1%0does actor have mission</t>
+ <t id="3310">%1%0does actor have objectives</t>
+ </page>
 
 <page id="393382" title="L2 Tour Of A Lifetime" descr="0" voice="no">
  <t id="182015">I have a group of {value@{param@Cue}.{param@ID} PassengerTotal} passengers booked on an 'Xtreme Tour Of A Lifetime', but for some unknown reason our usual pilot is unavailable.  I'm looking for someone with a Passenger Transport to help.  The job will involve visiting all ten Xenon sectors.</t>
