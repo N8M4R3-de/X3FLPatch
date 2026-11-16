@@ -3368,7 +3368,7 @@
  <t id="1088">%0add event listener: quest/event=%1 objevent=%2 script=%3</t>
  <t id="1089">%0remove event listener: quest/event=%1</t>
  <t id="1090">%0display news article: page=%1 newsid=%2 occurrences=%3 maxoffertime=%4 maxtime=%5 placeholder:race1=%6 race2=%7 customarray=%8</t>
- <t id="1091">change event news availibility: %0 race=%1 sector=%2 jumps=%3</t>
+ <t id="1091">change event news availability: %0 race=%1 sector=%2 jumps=%3</t>
  <t id="1092">%0[%1] = %2[%3]</t>
  <t id="1093">%0square root of %1</t>
  <t id="1094">%1%0 get current action</t>
@@ -13631,7 +13631,7 @@
  <t id="1245">%1%0 pilot eject from ship</t>
  <t id="1250">%1%0 get repair cost of ship %2</t>
  <t id="1300">%0get missile flags of %1</t>
- <t id="1320">%0player has police license for race %1</t>
+ <t id="1320">%0player has police licence for race %1</t>
  <t id="1325">%1%0 get pilot tradeskill</t>
  <t id="1326">%0set pilot tradeskill to %1</t>
 </page>
@@ -18267,7 +18267,7 @@
  <t id="173">(Not enough space for station) We cannot move the station to that location, lowerlife, engage your pitiful brain, unholy one.</t>
  <t id="176">(new location confirmed) Moving station to requested site. You are fortunate for our patience.</t>
  <t id="179">(Location has become invalid) We cannot complete the duty, the location you specified is no longer valid. You have much to learn of the third dimension</t>
- <t id="182">(Successfully moved)We have relocated the station and are sanitizing our connection cables.</t>
+ <t id="182">(Successfully moved)We have relocated the station and are sanitising our connection cables.</t>
  <t id="200">(Player near Gate to closed sector)Paranid Central sectors are closed to all lower life forms by order of the great Pontifex Maximus Paranidia. Cease your approach, or see the end of your pitiful life.</t>
  <t id="201">(Player near Gate to clsoed sector)Paranid central sectors are closed by order of the great Pontifex Maximus Paranidia. Any attempt to enter will meet with lethal force and the ending of your pathetic life.</t>
  <t id="205">(Player entered closed sector)Central sectors are closed to inferior lifebeings. You have thirty sezuras to leave.</t>
@@ -18359,7 +18359,7 @@
  <t id="630">I am in need of assistance.</t>
  <t id="631">For the Priest Emperor!</t>
  <t id="632">You saved my life.</t>
- <t id="633">You have my graditude</t>
+ <t id="633">You have my gratitude</t>
 </page>
 
 <page id="300412" title="Paranid Border Patrol" descr="0" voice="yes">
@@ -20965,7 +20965,7 @@
  <t id="1246">%1%0 move pilot to ship %2: disable=%3</t>
  <t id="1250">%1%0 get repair cost of ship %2</t>
  <t id="1300">%0get missile flags of %1</t>
- <t id="1320">%0player has police license for race %1</t>
+ <t id="1320">%0player has police licence for race %1</t>
  <t id="1325">%1%0 get pilot tradeskill</t>
  <t id="1326">%0set pilot tradeskill to %1</t>
  <t id="1327">%1%0 fire missile %4 from turret %2 on %3</t>
@@ -39307,6 +39307,7 @@
  <t id="802">JumpFlg.NoDeviceCheck</t>
  <t id="803">JumpFlg.NoEnergyCheck</t>
  <t id="804">JumpFlg.NoJumpableCheck</t>
+ <t id="805">JumpFlg.NoEnergyUse</t>									
  <t id="830">BlacklistType.Disabled</t>
  <t id="831">BlacklistType.Auto</t>
  <t id="832">BlacklistType.Manual</t>
@@ -39429,6 +39430,8 @@
  <t id="4008">Key.BestBuy</t>
  <t id="4009">Key.BestSell</t>
  <t id="4010">Key.ScriptDelete</t>
+ <t id="4011">Key.Autopilot</t>
+ <t id="4012">Key.DockAt</t>							   							
  <t id="4100">Find.Player</t>
  <t id="4101">Find.Hyperspeed</t>
  <t id="4102">Find.ExcludeGates</t>
@@ -41133,18 +41136,6 @@
  <t id="3291">%0set passenger eject disabled: %1</t>
  <t id="3292">%0get mod name display</t>
  <t id="3293">set mod name display: %0</t>
- <t id="3282">%1%0get all production modifiers</t>
- <t id="3283">%1%0get production modifier: ware=%2</t>
- <t id="3284">%1%0should display production modifier: ware=%2</t>
- <t id="3285">%0add production modifier: ware=%1, percent=%2, display=%3</t>
- <t id="3286">%0remove production modifier: ware=%1</t>
- <t id="3287">%1%0get sector override race name</t>
- <t id="3288">%0set sector override race name: %1</t>
- <t id="3289">%0clear sector override race name</t>
- <t id="3290">%1%0is passenger eject disabled</t>
- <t id="3291">%0set passenger eject disabled: %1</t>
- <t id="3292">%0get mod name display</t>
- <t id="3293">set mod name display: %0</t>
  <t id="3294">set maker race override: shiptype=%0, race=%1</t>
  <t id="3295">%0get maker race override: shiptype=%1</t>
  <t id="3296">set secondary maker race: shiptype=%0, race=%1</t>
@@ -41156,7 +41147,13 @@
  <t id="3302">%0set station rebuild in owner sector only: %1</t>
  <t id="3303">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, script=%5</t>
  <t id="3304">add sidebar custom entry, personal: id=%0, icon=%1, pageid=%2, textid=%3, submenu=%4, scriptname=%5</t>
-</page>
+ <t id="3305">add black market ware: %0, chance=%1</t>
+ <t id="3306">%0force destruct: show no explosion=%1</t>
+ <t id="3307">%1%0get actors</t>
+ <t id="3308">%0remove actor: %1</t>
+ <t id="3309">%1%0does actor have mission</t>
+ <t id="3310">%1%0does actor have objectives</t>
+ </page>
 
 <page id="392005" title="Script Command Menu" descr="0" voice="no">
  <t id="103">Reihen &amp; Tabellen</t>
@@ -41370,6 +41367,7 @@
  <t id="100036">COMMAND_BUILD_COMPLEX</t>
  <t id="100037">COMMAND_RECON_DEPLOYJUMP</t>
  <t id="100038">COMMAND_COLLECT_DEPLOYED</t>
+ <t id="100039">COMMAND_MOVE_TO_OBJECT</t>										  
 </page>
 
 <page id="392009" title="Script FLRET" descr="0" voice="no">
